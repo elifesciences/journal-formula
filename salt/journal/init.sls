@@ -1,7 +1,7 @@
 git.latest:
     - user: {{ pillar.sys.deploy_user.username }}
     - name: git@github.com:elifesciences/journal.git
-    - rev: {{ salt['elife.rev']() }}
+    - rev: HEAD
     - branch: {{ salt['elife.branch']() }}
     - target: /srv/journal/
     - force_fetch: True
