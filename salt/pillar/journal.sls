@@ -1,0 +1,2 @@
+journal:
+    message: Hello world
