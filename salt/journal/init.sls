@@ -1,5 +1,5 @@
 git.latest:
-    - user: {{ pillar.sys.deploy_user.username }}
+    - user: {{ pillar.elife.deploy_user.username }}
     - name: git@github.com:elifesciences/journal.git
     - rev: HEAD
     - branch: {{ salt['elife.branch']() }}
