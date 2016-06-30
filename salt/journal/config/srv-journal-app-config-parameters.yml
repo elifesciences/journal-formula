@@ -1,0 +1,7 @@
+parameters:
+    secret: {{ pillar.journal.secret }}
+    trusted_hosts:
+        - ^localhost$
+    trusted_proxies:
+        - 192.0.0.1
+

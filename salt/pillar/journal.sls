@@ -1,2 +1,3 @@
 journal:
-    message: Hello world
+    secret: ThisTokenIsNotSoSecretChangeIt
+
