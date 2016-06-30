@@ -1,4 +1,5 @@
 base:
     '*':
         - elife
+        - elife.php7
         - journal
