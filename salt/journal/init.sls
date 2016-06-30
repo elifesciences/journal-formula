@@ -23,6 +23,9 @@ journal-repository:
         - name: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - cmd: php-composer-1.0
+            - cmd: php-puli-latest
 
     git.latest:
         - user: {{ pillar.elife.deploy_user.username }}
@@ -44,3 +47,10 @@ config-file:
         - user: {{ pillar.elife.deploy_user.username }}
         - require: 
             - git: journal-repository
+
+composer-install:
+    cmd.run:
+        - name: composer1.0 install
+        - cwd: /srv/journal/
+        - require:
+            - file: config-file
