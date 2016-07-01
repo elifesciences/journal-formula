@@ -82,6 +82,14 @@ composer-install:
             - file: config-file
             - cmd: var-directory
 
+puli-publish-install:
+    cmd.run:
+        - name: puli publish --install
+        - cwd: /srv/journal/
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - cmd: composer-install
+
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/website.conf
