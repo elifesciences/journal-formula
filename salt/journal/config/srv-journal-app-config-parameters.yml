@@ -1,4 +1,5 @@
 parameters:
+    api_url: https://api.elifesciences.org/
     secret: {{ pillar.journal.secret }}
     trusted_hosts:
         - ^localhost$
