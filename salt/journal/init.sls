@@ -21,11 +21,10 @@ php-puli-latest:
 journal-repository:
 
     git.latest:
-        #- user: {{ pillar.elife.deploy_user.username }}
         - identity: {{ pillar.elife.deploy_user.key }}
         - name: git@github.com:elifesciences/journal.git
-        - rev: jenkinsfile #HEAD
-        - branch: jenkinsfile #{{ salt['elife.branch']() }}
+        - rev: {{ salt['elife.rev']() }}
+        - branch: {{ salt['elife.branch']() }}
         - target: /srv/journal/
         - force_fetch: True
         - force_checkout: True
