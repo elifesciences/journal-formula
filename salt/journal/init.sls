@@ -21,8 +21,8 @@ php-puli-latest:
 journal-repository:
 
     git.latest:
-        - identity: {{ pillar.elife.deploy_user.key }}
         - name: git@github.com:elifesciences/journal.git
+        - identity: {{ pillar.elife.deploy_user.key or '' }}
         - rev: {{ salt['elife.rev']() }}
         - branch: {{ salt['elife.branch']() }}
         - target: /srv/journal/
@@ -51,7 +51,7 @@ config-file:
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
         - require: 
-            - git: journal-repository
+            - file: journal-repository
 
 # files and directories must be readable and writable by both elife and www-data
 # they are both in the www-data group, but the g+s flag makes sure that
