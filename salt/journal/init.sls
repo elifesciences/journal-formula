@@ -19,16 +19,9 @@ php-puli-latest:
             - which puli
 
 journal-repository:
-    file.directory:
-        - name: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - cmd: php-composer-1.0
-            - cmd: php-puli-latest
 
     git.latest:
-        - user: {{ pillar.elife.deploy_user.username }}
+        #- user: {{ pillar.elife.deploy_user.username }}
         - identity: {{ pillar.elife.deploy_user.key }}
         - name: git@github.com:elifesciences/journal.git
         - rev: jenkinsfile #HEAD
@@ -38,7 +31,18 @@ journal-repository:
         - force_checkout: True
         - force_reset: True
         - require:
-            - file: journal-repository
+            - cmd: php-composer-1.0
+            - cmd: php-puli-latest
+
+    file.directory:
+        - name: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - recurse:
+            - user
+            - group
+        - require:
+            - git: journal-repository
 
 config-file:
     file.managed:
