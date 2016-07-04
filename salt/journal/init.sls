@@ -29,6 +29,7 @@ journal-repository:
 
     git.latest:
         - user: {{ pillar.elife.deploy_user.username }}
+        - identity: {{ pillar.elife.deploy_user.key }}
         - name: git@github.com:elifesciences/journal.git
         - rev: jenkinsfile #HEAD
         - branch: jenkinsfile #{{ salt['elife.branch']() }}
