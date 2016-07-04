@@ -77,7 +77,7 @@ var-directory:
 
 composer-install:
     cmd.run:
-        - name: composer1.0 install
+        - name: composer1.0 --no-interaction install
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
         # to correctly writing into var/
