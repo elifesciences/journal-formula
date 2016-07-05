@@ -71,7 +71,7 @@ var-directory:
             - git: journal-repository
 
     cmd.run:
-        - name: chmod g+s /srv/journal/var
+        - name: chmod -R g+s /srv/journal/var
         - require:
             - file: var-directory
 
