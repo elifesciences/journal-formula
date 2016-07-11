@@ -99,7 +99,7 @@ journal-nginx-vhost:
         - name: /etc/nginx/sites-enabled/website.conf
         - source: salt://journal/config/etc-nginx-sites-enabled-journal.conf
         - require:
-            - service: nginx-server-service
+            - nginx-config
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
