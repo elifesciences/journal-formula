@@ -75,15 +75,21 @@ var-directory:
         - require:
             - file: var-directory
 
+web-assets-symlink-cleaning:
+    cmd.run:
+        - name: rm -f web/assets
+        - cwd: /srv/journal/
+
 composer-install:
     cmd.run:
         - name: composer1.0 --no-interaction install
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
-        # to correctly writing into var/
+        # to correctly write into var/
         - umask: 002
         - require:
             - file: config-file
+            - cmd: web-assets-symlink-cleaning
             - cmd: var-directory
 
 puli-publish-install:
