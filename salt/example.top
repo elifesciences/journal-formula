@@ -5,3 +5,4 @@ base:
         - elife.nginx
         - elife.nginx-php7
         - journal
+        - elife.proofreader-php
