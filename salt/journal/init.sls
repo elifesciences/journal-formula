@@ -19,8 +19,7 @@ php-puli-latest:
             - which puli
 
 journal-repository:
-
-    git.latest:
+    builder.git_latest:
         - name: git@github.com:elifesciences/journal.git
         - identity: {{ pillar.elife.deploy_user.key or '' }}
         - rev: {{ salt['elife.rev']() }}
@@ -29,6 +28,7 @@ journal-repository:
         - force_fetch: True
         - force_checkout: True
         - force_reset: True
+        - fetch_pull_requests: True
         - require:
             - cmd: php-composer-1.0
             - cmd: php-puli-latest
@@ -41,7 +41,7 @@ journal-repository:
             - user
             - group
         - require:
-            - git: journal-repository
+            - builder: journal-repository
 
 config-file:
     file.managed:
@@ -68,7 +68,7 @@ var-directory:
             - group
             - mode
         - require:
-            - git: journal-repository
+            - builder: journal-repository
 
     cmd.run:
         - name: chmod -R g+s /srv/journal/var
