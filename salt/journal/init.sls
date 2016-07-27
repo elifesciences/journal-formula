@@ -100,6 +100,14 @@ puli-publish-install:
         - require:
             - cmd: composer-install
 
+cache-cleaning:
+    cmd.run:
+        - name: bin/console cache:clear --env {{ pillar.elife.env }}
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - cmd: puli-publish-install
+
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/website.conf
