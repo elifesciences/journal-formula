@@ -104,6 +104,7 @@ journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/website.conf
         - source: salt://journal/config/etc-nginx-sites-enabled-journal.conf
+        - template: jinja
         - require:
             - nginx-config
         - listen_in:
