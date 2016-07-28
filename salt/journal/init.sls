@@ -75,10 +75,13 @@ var-directory:
         - require:
             - file: var-directory
 
+# Temporary fix for https://github.com/puli/issues/issues/186
 web-assets-symlink-cleaning:
     cmd.run:
         - name: rm -f web/assets
         - cwd: /srv/journal/
+        - require_in:
+            - cmd: puli-publish-install
 
 composer-install:
     cmd.run:
@@ -89,7 +92,6 @@ composer-install:
         - umask: 002
         - require:
             - file: config-file
-            - cmd: web-assets-symlink-cleaning
             - cmd: var-directory
 
 puli-publish-install:
