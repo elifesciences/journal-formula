@@ -84,7 +84,7 @@ composer-install:
     cmd.run:
         {% if pillar.elife.env == 'prod' or pillar.elife.env == 'demo' or pillar.elife.env == 'end2end' %}
         - name: composer1.0 --no-interaction install --classmap-authoritative --no-dev
-        {% elseif pillar.elife.env == 'ci' %}
+        {% elif pillar.elife.env == 'ci' %}
         - name: composer1.0 --no-interaction install --classmap-authoritative
         {% else %}
         - name: composer1.0 --no-interaction install
