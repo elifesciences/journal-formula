@@ -82,11 +82,19 @@ web-assets-symlink-cleaning:
 
 composer-install:
     cmd.run:
+        {% if pillar.elife.env in ['prod', 'demo', 'end2end'] %}
+        - name: composer1.0 --no-interaction install --classmap-authoritative --no-dev
+        {% elif pillar.elife.env in ['ci'] %}
+        - name: composer1.0 --no-interaction install --classmap-authoritative
+        {% else %}
         - name: composer1.0 --no-interaction install
+        {% endif %}
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
         # to correctly write into var/
         - umask: 002
+        - env:
+            - SYMFONY_ENV: {{ pillar.elife.env }}
         - require:
             - file: config-file
             - cmd: web-assets-symlink-cleaning
@@ -99,14 +107,6 @@ puli-publish-install:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - cmd: composer-install
-
-cache-cleaning:
-    cmd.run:
-        - name: bin/console cache:clear --env {{ pillar.elife.env }}
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - cmd: puli-publish-install
 
 journal-nginx-vhost:
     file.managed:
