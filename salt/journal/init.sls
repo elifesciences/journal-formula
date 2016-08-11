@@ -21,7 +21,7 @@ php-puli-latest:
 journal-repository:
     builder.git_latest:
         - name: git@github.com:elifesciences/journal.git
-        - identity: {{ pillar.elife.deploy_user.key or '' }}
+        - identity: {{ pillar.elife.projects_builder.key or '' }}
         - rev: {{ salt['elife.rev']() }}
         - branch: {{ salt['elife.branch']() }}
         - target: /srv/journal/
