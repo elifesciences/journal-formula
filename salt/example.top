@@ -4,5 +4,6 @@ base:
         - elife.php7
         - elife.nginx
         - elife.nginx-php7
+        - elife.puli
         - journal
         - elife.proofreader-php
