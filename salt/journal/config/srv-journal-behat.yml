@@ -4,7 +4,15 @@ imports:
 default:
     extensions:
         Behat\MinkExtension:
+            {% if pillar.elife.env == 'dev' %}
             base_url: http://{{ pillar.elife.env }}--journal.elifesciences.org/
+            {% else %}
+            base_url: http://{{ pillar.elife.env }}--journal.elifesciences.org/app_test.php/
+            {% endif %}
         Behat\Symfony2Extension:
             kernel:
+                {% if pillar.elife.env == 'dev' %}
+                env: test
+                {% else %}
                 env: {{ pillar.elife.env }}
+                {% endif %}
