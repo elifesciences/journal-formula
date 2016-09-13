@@ -5,9 +5,9 @@ default:
     extensions:
         Behat\MinkExtension:
             {% if pillar.elife.env == 'dev' %}
-            base_url: http://{{ pillar.elife.env }}--journal.elifesciences.org/
-            {% else %}
             base_url: http://{{ pillar.elife.env }}--journal.elifesciences.org/app_test.php/
+            {% else %}
+            base_url: http://{{ pillar.elife.env }}--journal.elifesciences.org/
             {% endif %}
         Behat\Symfony2Extension:
             kernel:
