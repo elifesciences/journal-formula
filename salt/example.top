@@ -5,5 +5,9 @@ base:
         - elife.nginx
         - elife.nginx-php7
         - elife.puli
+        {% if pillar.elife.env in ['ci', 'dev'] %}
+        - elife.java
+        - elife.selenium
+        {% endif %}
         - journal
         - elife.proofreader-php
