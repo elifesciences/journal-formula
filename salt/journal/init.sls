@@ -98,3 +98,15 @@ journal-nginx-vhost:
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
+
+{% if pillar.elife.env in ['ci', 'dev'] %}
+journal-behat:
+    file.managed:
+        - name: /srv/journal/behat.yml
+        - source: salt://journal/config/srv-journal-behat.yml
+        - template: jinja
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - file: journal-repository
+{% endif %}
