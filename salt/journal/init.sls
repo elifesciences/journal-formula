@@ -109,4 +109,12 @@ journal-behat:
         - group: {{ pillar.elife.deploy_user.username }}
         - require:
             - file: journal-repository
+
+journal-behat-screenshots:
+    file.directory:
+        - name: /tmp/behat-screenshots
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-behat
 {% endif %}
