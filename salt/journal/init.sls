@@ -118,7 +118,20 @@ journal-behat-screenshots:
         - require:
             - journal-behat
 
-gstreamer1.0-libav:
-    pkg:
-        - installed
+headless-firefox-multimedia:
+    pkg.installed:
+        - pkgs:
+            - mplayer
+            - linux-sound-base
+
+    cmd.run:
+        - name: sudo apt-get -y install linux-image-extra-$(uname -r)
+        - require:
+            - pkg: headless-firefox-multimedia
+
+    kmod.present:
+        - name: snd_dummy
+        - persist: True
+        - require:
+            - cmd: headless-firefox-multimedia
 {% endif %}
