@@ -117,4 +117,8 @@ journal-behat-screenshots:
         - group: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-behat
+
+gstreamer1.0-libav:
+    pkg:
+        - installed
 {% endif %}
