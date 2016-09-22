@@ -1,6 +1,8 @@
 parameters:
-    api_url: {{ pillar.journal.api_url }}
-    secret: {{ pillar.journal.secret }}
+    {% for name, value in pillar.journal.items() %}
+    {{ name }}: {{ value }}
+    {% endfor %}
+
     trusted_hosts: ['^.*elifesciences\.org$', 'localhost']
     trusted_proxies:
         - 192.0.0.1
