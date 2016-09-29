@@ -99,6 +99,17 @@ journal-nginx-vhost:
             - service: nginx-server-service
             - service: php-fpm
 
+syslog-ng-for-journal-logs:
+    file.managed:
+        - name: /etc/syslog-ng/conf.d/journal.conf
+        - source: salt://journal/config/etc-syslog-ng-conf.d-journal.conf
+        - template: jinja
+        - require:
+            - syslog-ng
+            - composer-install
+        - listen_in:
+            - service: syslog-ng
+
 {% if pillar.elife.env in ['ci', 'dev'] %}
 journal-behat:
     file.managed:
