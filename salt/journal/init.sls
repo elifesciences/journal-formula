@@ -105,7 +105,7 @@ syslog-ng-for-journal-logs:
         - source: salt://journal/config/etc-syslog-ng-conf.d-journal.conf
         - template: jinja
         - require:
-            - syslog-ng
+            - pkg: syslog-ng
             - composer-install
         - listen_in:
             - service: syslog-ng
