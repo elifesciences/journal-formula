@@ -110,6 +110,11 @@ syslog-ng-for-journal-logs:
         - listen_in:
             - service: syslog-ng
 
+logrotate-for-journal-logs:
+    file.managed:
+        - name: /etc/logrotate.d/journal
+        - source: salt://elife/config/etc-logrotate.d-journal
+
 {% if pillar.elife.env in ['ci', 'dev'] %}
 journal-behat:
     file.managed:
