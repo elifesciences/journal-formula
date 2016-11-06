@@ -59,6 +59,8 @@ web-assets-symlink-cleaning:
     cmd.run:
         - name: rm -f web/assets
         - cwd: /srv/journal/
+        - require:
+            - file: journal-repository
 
 composer-install:
     cmd.run:
