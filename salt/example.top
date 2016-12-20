@@ -5,6 +5,7 @@ base:
         - elife.nginx
         - elife.nginx-php7
         - elife.puli
+        - elife.nodejs6
         {% if pillar.elife.env in ['ci', 'dev'] %}
         - elife.java
         - elife.selenium
