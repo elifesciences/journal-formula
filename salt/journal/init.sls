@@ -78,6 +78,14 @@ journal-npm-install:
             - journal-repository
             - npm-build-dependencies
 
+mozjpeg-manual-install:
+    cmd.run:
+        - name: node node_modules/mozjpeg/lib/install.js
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-npm-install
+
 image-generation:
     cmd.run:
         - name: node_modules/.bin/gulp
@@ -85,6 +93,7 @@ image-generation:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-npm-install
+            - mozjpeg-manual-install
 
 composer-install:
     cmd.run:
