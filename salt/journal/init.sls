@@ -67,6 +67,7 @@ npm-build-dependencies:
         - pkgs:
             - make
             - g++
+            - libjpeg-turbo-progs
 
 journal-npm-install:
     cmd.run:
