@@ -66,6 +66,7 @@ npm-build-dependencies:
     pkg.installed:
         - pkgs:
             - make
+            - g++
 
 journal-npm-install:
     cmd.run:
