@@ -62,6 +62,11 @@ web-assets-symlink-cleaning:
         - require:
             - file: journal-repository
 
+npm-build-dependencies:
+    pkg.installed:
+        - pkgs:
+            - make
+
 journal-npm-install:
     cmd.run:
         - name: npm install
@@ -69,6 +74,7 @@ journal-npm-install:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-repository
+            - npm-build-dependencies
 
 image-generation:
     cmd.run:
