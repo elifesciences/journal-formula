@@ -62,6 +62,22 @@ web-assets-symlink-cleaning:
         - require:
             - file: journal-repository
 
+journal-npm-install:
+    cmd.run:
+        - name: npm install
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-repository
+
+image-generation:
+    cmd.run:
+        - name: node_modules/.bin/gulp
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-npm-install
+
 composer-install:
     cmd.run:
         {% if pillar.elife.env in ['prod', 'demo', 'end2end'] %}
@@ -81,6 +97,7 @@ composer-install:
             - file: config-file
             - cmd: web-assets-symlink-cleaning
             - cmd: var-directory
+            - image-generation
 
 puli-publish-install:
     cmd.run:
@@ -88,6 +105,7 @@ puli-publish-install:
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
+            - image-generation
             - cmd: composer-install
 
 journal-nginx-vhost:
