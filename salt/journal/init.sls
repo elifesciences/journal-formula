@@ -57,7 +57,7 @@ var-directory:
 
 web-assets-symlink-cleaning:
     cmd.run:
-        - name: rm -f web/assets
+        - name: rm -f web/assets web/images
         - cwd: /srv/journal/
         - require:
             - file: journal-repository
