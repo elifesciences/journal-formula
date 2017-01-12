@@ -125,16 +125,44 @@ puli-publish-install:
             - image-generation
             - cmd: composer-install
 
+journal-nginx-error-pages:
+    file.directory:
+        - name: /srv/error-pages
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+
+    git.latest:
+        - name: git@github.com:elifesciences/error-pages.git
+        - identity: {{ pillar.elife.projects_builder.key or '' }}
+        - rev: master
+        - branch: master
+        - target: /srv/error-pages/
+        - force_fetch: True
+        - force_checkout: True
+        - force_reset: True
+        - require:
+            - file: journal-nginx-error-pages
+
+journal-nginx-vhost-old:
+    file.absent:
+        - name: /etc/nginx/sites-enabled/website.conf
+        - require:
+            - nginx-config
+            - journal-nginx-error-pages
+
 journal-nginx-vhost:
     file.managed:
-        - name: /etc/nginx/sites-enabled/website.conf
+        - name: /etc/nginx/sites-enabled/journal.conf
         - source: salt://journal/config/etc-nginx-sites-enabled-journal.conf
         - template: jinja
         - require:
             - nginx-config
+            - journal-nginx-error-pages
+            - journal-nginx-vhost-old
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
+
 
 syslog-ng-for-journal-logs:
     file.managed:
