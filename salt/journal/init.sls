@@ -79,9 +79,11 @@ journal-npm-install:
             - journal-repository
             - npm-build-dependencies
 
-mozjpeg-manual-install:
+journal-node-modules-manual-install:
     cmd.run:
-        - name: node node_modules/mozjpeg/lib/install.js
+        - name: |
+            node node_modules/mozjpeg/lib/install.js
+            node node_modules/optipng-bin/lib/install.js
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
@@ -94,7 +96,7 @@ image-generation:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-npm-install
-            - mozjpeg-manual-install
+            - journal-node-modules-manual-install
 
 composer-install:
     cmd.run:
