@@ -68,6 +68,7 @@ npm-build-dependencies:
             - make
             - g++
             - libjpeg-turbo-progs
+            - optipng
 
 journal-npm-install:
     cmd.run:
