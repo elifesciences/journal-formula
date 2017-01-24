@@ -168,7 +168,7 @@ journal-nginx-vhost:
 
 {% for title, user in pillar.journal.web_users.items() %}
 journal-nginx-authentication-{{ title }}:
-    htpasswd.user_exists:
+    webutil.user_exists:
         - name: {{ user.username }}
         - password: {{ user.password }}
         - htpasswd_file: /etc/nginx/journal.htpasswd
