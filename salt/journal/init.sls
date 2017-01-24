@@ -166,6 +166,16 @@ journal-nginx-vhost:
             - service: nginx-server-service
             - service: php-fpm
 
+{% for title, user in pillar.journal.web_users.items() %}
+journal-nginx-authentication-{{ title }}:
+    htpasswd.user_exists:
+        - name: {{ user.username }}
+        - password: {{ user.password }}
+        - htpasswd_file: /etc/nginx/journal.htpasswd
+        - require:
+            - journal-nginx-vhost
+{% endfor %}
+
 
 syslog-ng-for-journal-logs:
     file.managed:

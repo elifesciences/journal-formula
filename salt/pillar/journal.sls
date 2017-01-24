@@ -4,3 +4,4 @@ journal:
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
+    web_users: {}
