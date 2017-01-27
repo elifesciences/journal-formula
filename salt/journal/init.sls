@@ -91,7 +91,7 @@ journal-node-modules-manual-install:
 
 image-generation:
     cmd.run:
-        - name: node_modules/.bin/gulp
+        - name: ./retrying-gulp.sh
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
