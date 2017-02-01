@@ -7,3 +7,9 @@ parameters:
     trusted_proxies:
         - 192.0.0.1
 
+    swiftmailer:
+        transport: smtp
+        username: {{ pillar.elife.postfix_ses_mail.user }}
+        password: {{ pillar.elife.postfix_ses_mail.pass }}
+        host: {{ pillar.elife.postfix_ses_mail.smtp }}
+        port: {{ pillar.elife.postfix_ses_mail.port }}
