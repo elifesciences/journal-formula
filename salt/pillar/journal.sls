@@ -5,3 +5,9 @@ journal:
     secret: ThisTokenIsNotSoSecretChangeIt
 
     web_users: {}
+
+    postfix_ses_mail:
+        smtp: null
+        port: null
+        user: null
+        pass: null

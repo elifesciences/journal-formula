@@ -8,7 +8,7 @@ parameters:
         - 192.0.0.1
 
     mailer_transport: smtp
-    mailer_username: {{ pillar.elife.postfix_ses_mail.user }}
-    mailer_password: {{ pillar.elife.postfix_ses_mail.pass }}
-    mailer_host: {{ pillar.elife.postfix_ses_mail.smtp }}
-    mailer_port: {{ pillar.elife.postfix_ses_mail.port }}
+    mailer_username: {{ pillar.journal.postfix_ses_mail.user }}
+    mailer_password: {{ pillar.journal.postfix_ses_mail.pass }}
+    mailer_host: {{ pillar.journal.postfix_ses_mail.smtp }}
+    mailer_port: {{ pillar.journal.postfix_ses_mail.port }}
