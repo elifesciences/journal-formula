@@ -6,8 +6,9 @@ journal:
 
     web_users: {}
 
-    postfix_ses_mail:
-        smtp: null
+    mailer:
+        host: null
         port: null
-        user: null
-        pass: null
+        username: null
+        password: null
+        encryption: false
