@@ -11,4 +11,4 @@ journal:
         port: null
         username: null
         password: null
-        encryption: false
+        encryption: null
