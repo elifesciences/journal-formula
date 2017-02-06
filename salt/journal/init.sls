@@ -146,13 +146,6 @@ journal-nginx-error-pages:
         - require:
             - file: journal-nginx-error-pages
 
-journal-nginx-vhost-old:
-    file.absent:
-        - name: /etc/nginx/sites-enabled/website.conf
-        - require:
-            - nginx-config
-            - journal-nginx-error-pages
-
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal.conf
@@ -161,7 +154,6 @@ journal-nginx-vhost:
         - require:
             - nginx-config
             - journal-nginx-error-pages
-            - journal-nginx-vhost-old
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
