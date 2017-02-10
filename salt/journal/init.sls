@@ -42,7 +42,7 @@ var-directory:
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.webserver.username }}
         - dir_mode: 775
-        - file_mode: 664
+        - file_mode: 660
         - recurse:
             - user
             - group
