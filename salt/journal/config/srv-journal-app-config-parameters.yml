@@ -1,6 +1,6 @@
 parameters:
-    {% for name, value in pillar.journal.items() %}
-    {{ name }}: {{ value }}
+    {% for name in ['secret', 'api_key', 'api_url', 'session_name'] %}
+    {{ name }}: {{ pillar.journal.get(name) }}
     {% endfor %}
 
     trusted_hosts: ['^.*elifesciences\.org$', 'localhost']
