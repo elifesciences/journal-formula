@@ -4,6 +4,8 @@ journal:
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
+    session_name: journal
+
     web_users: {}
 
     mailer:
