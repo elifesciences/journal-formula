@@ -113,6 +113,7 @@ composer-install:
         - umask: 002
         - env:
             - SYMFONY_ENV: {{ pillar.elife.env }}
+            - COMPOSER_DISCARD_CHANGES: true
         - require:
             - file: config-file
             - cmd: web-assets-symlink-cleaning
