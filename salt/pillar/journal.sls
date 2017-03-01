@@ -9,8 +9,8 @@ journal:
     web_users: {}
 
     mailer:
-        host: null
-        port: null
-        username: null
-        password: null
-        encryption: null
+        host: localhost
+        port: 25
+        username: anonymous
+        password: ""
+        encryption: "null"
