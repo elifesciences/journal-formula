@@ -13,3 +13,5 @@ parameters:
     mailer_username: {{ pillar.journal.mailer.username }}
     mailer_password: {{ pillar.journal.mailer.password }}
     mailer_encryption: {{ pillar.journal.mailer.encryption }}
+
+    disqus_domain: elifesciences-staging
