@@ -10,8 +10,7 @@ journal-repository:
         - force_reset: True
         - fetch_pull_requests: True
         - require:
-            - cmd: php-composer-1.0
-            - cmd: php-puli-latest
+            - cmd: composer
 
     file.directory:
         - name: /srv/journal
@@ -55,13 +54,6 @@ var-directory:
         - require:
             - file: var-directory
 
-web-assets-symlink-cleaning:
-    cmd.run:
-        - name: rm -f web/assets web/images
-        - cwd: /srv/journal/
-        - require:
-            - file: journal-repository
-
 npm-build-dependencies:
     pkg.installed:
         - pkgs:
@@ -101,11 +93,11 @@ image-generation:
 composer-install:
     cmd.run:
         {% if pillar.elife.env in ['prod', 'demo', 'end2end'] %}
-        - name: composer1.0 --no-interaction install --classmap-authoritative --no-dev
+        - name: composer --no-interaction install --classmap-authoritative --no-dev
         {% elif pillar.elife.env in ['ci'] %}
-        - name: composer1.0 --no-interaction install --classmap-authoritative
+        - name: composer --no-interaction install --classmap-authoritative
         {% else %}
-        - name: composer1.0 --no-interaction install
+        - name: composer --no-interaction install
         {% endif %}
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
@@ -116,18 +108,8 @@ composer-install:
             - COMPOSER_DISCARD_CHANGES: 'true'
         - require:
             - file: config-file
-            - cmd: web-assets-symlink-cleaning
             - cmd: var-directory
             - image-generation
-
-puli-publish-install:
-    cmd.run:
-        - name: puli publish --install
-        - cwd: /srv/journal/
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - image-generation
-            - cmd: composer-install
 
 journal-nginx-error-pages:
     file.directory:
