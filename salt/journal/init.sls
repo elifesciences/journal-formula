@@ -1,3 +1,9 @@
+maintenance-mode-start:
+    cmd.run:
+        - name: /etc/init.d/nginx stop
+        - require:
+            - nginx-server-service
+    
 journal-repository:
     builder.git_latest:
         - name: git@github.com:elifesciences/journal.git
@@ -11,6 +17,7 @@ journal-repository:
         - fetch_pull_requests: True
         - require:
             - cmd: composer
+            - maintenance-mode-start
 
     file.directory:
         - name: /srv/journal
@@ -141,6 +148,12 @@ journal-nginx-vhost:
             - service: nginx-server-service
             - service: php-fpm
 
+maintenance-mode-end:
+    cmd.run:
+        - name: /etc/init.d/nginx start
+        - require:
+            - journal-nginx-vhost
+
 {% for title, user in pillar.journal.web_users.items() %}
 journal-nginx-authentication-{{ title }}:
     webutil.user_exists:
@@ -196,3 +209,4 @@ headless-firefox-multimedia:
         - require:
             - cmd: headless-firefox-multimedia
 {% endif %}
+
