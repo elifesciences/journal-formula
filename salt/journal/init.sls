@@ -96,6 +96,7 @@ image-generation:
         - require:
             - journal-npm-install
             - journal-node-modules-manual-install
+            - composer-install
 
 composer-install:
     cmd.run:
@@ -116,7 +117,6 @@ composer-install:
         - require:
             - file: config-file
             - cmd: var-directory
-            - image-generation
 
 journal-nginx-error-pages:
     file.directory:
