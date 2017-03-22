@@ -100,7 +100,7 @@ image-generation:
 
 composer-install:
     cmd.run:
-        {% if pillar.elife.env in ['prod', 'demo', 'end2end'] %}
+        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest'] %}
         - name: composer --no-interaction install --classmap-authoritative --no-dev
         {% elif pillar.elife.env in ['ci'] %}
         - name: composer --no-interaction install --classmap-authoritative
