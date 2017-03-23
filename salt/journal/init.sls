@@ -45,7 +45,7 @@ config-file:
 var-directory:
     file.directory:
         - name: /srv/journal/var
-        - user: {{ pillar.elife.deploy_user.username }}
+        - user: {{ pillar.elife.webserver.username }}
         - group: {{ pillar.elife.webserver.username }}
         - dir_mode: 775
         - file_mode: 660
