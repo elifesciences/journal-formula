@@ -3,7 +3,19 @@ maintenance-mode-start:
         - name: /etc/init.d/nginx stop
         - require:
             - nginx-server-service
-    
+
+journal-php-extensions:
+    pkg.installed:
+        - pkgs:
+            - php7.0-redis
+        - require:
+            - php
+            {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
+            - redis-server
+            {% endif %}
+        - watch_in:
+            - service: php-fpm
+
 journal-repository:
     builder.git_latest:
         - name: git@github.com:elifesciences/journal.git
@@ -100,7 +112,7 @@ image-generation:
 
 composer-install:
     cmd.run:
-        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest'] %}
+        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
         - name: composer --no-interaction install --classmap-authoritative --no-dev
         {% elif pillar.elife.env in ['ci'] %}
         - name: composer --no-interaction install --classmap-authoritative
@@ -117,6 +129,7 @@ composer-install:
         - require:
             - file: config-file
             - cmd: var-directory
+            - journal-php-extensions
 
 journal-nginx-error-pages:
     file.directory:

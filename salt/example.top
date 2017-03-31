@@ -5,6 +5,9 @@ base:
         - elife.nginx
         - elife.nginx-php7
         - elife.nodejs6
+        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
+        - elife.redis-server
+        {% endif %}
         {% if pillar.elife.env in ['ci', 'dev'] %}
         - elife.java
         - elife.selenium
