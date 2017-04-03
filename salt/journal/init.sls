@@ -221,5 +221,14 @@ headless-firefox-multimedia:
         - persist: True
         - require:
             - cmd: headless-firefox-multimedia
+
+# for patterns-php and other private projects access
+# in particular, building them for the dependencies-journal-update-patterns-php pipeline
+add-key-to-elife-user:
+    file.managed:
+        - user: elife
+        - name: /home/{{ pillar.elife.deploy_user.username }}/.ssh/id_rsa
+        - source: salt://journal/config/home-deploy-user-.ssh-id_rsa
+        - mode: 400
 {% endif %}
 

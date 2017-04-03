@@ -15,3 +15,5 @@ journal:
         username: anonymous
         password: ""
         encryption: "null"
+
+
