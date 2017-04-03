@@ -16,4 +16,6 @@ parameters:
     mailer_password: {{ pillar.journal.mailer.password }}
     mailer_encryption: {{ pillar.journal.mailer.encryption }}
 
+    crm_url: https://crm.elifesciences.org/crm/civicrm/
+
     disqus_domain: elifesciences-staging
