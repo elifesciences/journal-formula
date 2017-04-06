@@ -3,7 +3,7 @@ parameters:
     {{ name }}: {{ pillar.journal.get(name) }}
     {% endfor %}
 
-    trusted_hosts: ['^.*elifesciences\.org$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$']
+    trusted_hosts: ['^(.+\.)?elifesciences.org$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$']
     trusted_proxies:
         - 192.0.0.1
 
