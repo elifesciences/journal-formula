@@ -4,8 +4,6 @@ parameters:
     {% endfor %}
 
     trusted_hosts: ['^(.+\.)?elifesciences.org$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$']
-    trusted_proxies:
-        - 192.0.0.1
 
     redis_cache: redis://localhost
 
