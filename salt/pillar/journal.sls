@@ -16,4 +16,5 @@ journal:
         password: ""
         encryption: "null"
 
-
+    status_checks:
+        Articles: articles
