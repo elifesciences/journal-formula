@@ -13,6 +13,7 @@ journal-php-extensions:
             {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
             - redis-server
             {% endif %}
+        - install_recommends: False
         - watch_in:
             - service: php-fpm
 
