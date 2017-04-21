@@ -10,7 +10,7 @@ journal-php-extensions:
             - php7.0-redis
         - require:
             - php
-            {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
+            {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
             - redis-server
             {% endif %}
         - install_recommends: False
@@ -113,7 +113,7 @@ image-generation:
 
 composer-install:
     cmd.run:
-        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
+        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
         - name: composer --no-interaction install --no-suggest --classmap-authoritative --no-dev
         {% elif pillar.elife.env != 'dev' %}
         - name: composer --no-interaction install --no-suggest --classmap-authoritative
