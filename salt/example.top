@@ -12,5 +12,6 @@ base:
         - elife.java
         - elife.selenium
         {% endif %}
+        - journal.curl-7-36
         - journal
         - elife.proofreader-php
