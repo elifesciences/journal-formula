@@ -5,15 +5,13 @@ maintenance-mode-start:
             - nginx-server-service
 
 journal-php-extensions:
-    pkg.installed:
-        - pkgs:
-            - php7.0-redis
+    cmd.run:
+        - name: apt-get install -y php7.0-redis
         - require:
             - php
             {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
             - redis-server
             {% endif %}
-        - install_recommends: False
         - watch_in:
             - service: php-fpm
 
