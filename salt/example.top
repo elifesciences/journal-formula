@@ -4,6 +4,7 @@ base:
         - elife.php7
         - elife.nginx
         - elife.nginx-php7
+        - elife.nginx-error-pages
         - elife.nodejs6
         {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
         - elife.redis-server

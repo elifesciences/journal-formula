@@ -130,24 +130,6 @@ composer-install:
             - cmd: var-directory
             - journal-php-extensions
 
-journal-nginx-error-pages:
-    file.directory:
-        - name: /srv/error-pages
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-
-    git.latest:
-        - name: git@github.com:elifesciences/error-pages.git
-        - identity: {{ pillar.elife.projects_builder.key or '' }}
-        - rev: master
-        - branch: master
-        - target: /srv/error-pages/
-        - force_fetch: True
-        - force_checkout: True
-        - force_reset: True
-        - require:
-            - file: journal-nginx-error-pages
-
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal.conf
@@ -155,7 +137,7 @@ journal-nginx-vhost:
         - template: jinja
         - require:
             - nginx-config
-            - journal-nginx-error-pages
+            - nginx-error-pages
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
