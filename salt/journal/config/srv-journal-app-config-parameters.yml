@@ -1,5 +1,5 @@
 parameters:
-    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'session_name', 'status_checks'] %}
+    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks'] %}
     {{ name }}: {{ pillar.journal.get(name) }}
     {% endfor %}
 
