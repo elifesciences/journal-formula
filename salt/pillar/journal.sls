@@ -3,6 +3,7 @@ journal:
     api_url_public: '%api_url%'
     api_key: key_for_authorizing_api_requests
     side_by_side_view_url: https://lens.elifesciences.org/
+    observer_url: https://observer.elifesciences.org/
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
