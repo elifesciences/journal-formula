@@ -17,3 +17,12 @@ parameters:
     crm_url: https://crm.elifesciences.org/crm/civicrm/
 
     disqus_domain: elifesciences-staging
+
+    # defaults for URL generation, should only be used in the CLI
+    {% if salt['elife.only_on_aws']() %}
+    router.request_context.host: {{ salt['elife.cfg']('project.full_hostname') }}
+    router.request_context.scheme: https
+    {% else %}
+    router.request_context.host: dev--journal.elifesciences.org 
+    router.request_context.scheme: http
+    {% endif %}
