@@ -148,6 +148,12 @@ maintenance-mode-end:
         - require:
             - journal-nginx-vhost
 
+maintenance-mode-check-nginx-stays-up:
+    cmd.run:
+        - name: sleep 2 && /etc/init.d/nginx status
+        - require:
+            - maintenance-mode-end
+
 {% for title, user in pillar.journal.web_users.items() %}
 journal-nginx-authentication-{{ title }}:
     webutil.user_exists:
