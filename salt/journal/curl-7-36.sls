@@ -10,7 +10,7 @@ curl-7-36-ppa:
         - keyserver: keyserver.ubuntu.com
 
 curl-7-36-packages:
-    pkg.latest:
+    pkg.installed:
         - pkgs:
             - curl
             - libcurl3
