@@ -19,8 +19,8 @@ parameters:
     disqus_domain: elifesciences-staging
 
     # defaults for URL generation - host
-    {% if pillar.journal.get('base_url') %}
-    router.request_context.host: {{ pillar.journal.get('base_url') }}
+    {% if pillar.journal.get('default_host') %}
+    router.request_context.host: {{ pillar.journal.get('default_host') }}
     {% elif salt['elife.only_on_aws']() %}
     router.request_context.host: {{ salt['elife.cfg']('project.full_hostname') }}
     {% else %}
