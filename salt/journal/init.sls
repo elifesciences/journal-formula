@@ -130,6 +130,18 @@ composer-install:
             - cmd: var-directory
             - journal-php-extensions
 
+journal-nginx-redirect-existing-paths:
+    file.managed:
+        - name: /etc/nginx/traits.d/redirect-existing-paths.conf
+        - source: salt://journal/config/etc-nginx-traits.d-redirect-existing-paths.conf
+        - template: jinja
+        - require:
+            - nginx-config
+            - nginx-error-pages
+        - listen_in:
+            - service: nginx-server-service
+            - service: php-fpm
+
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal.conf
@@ -138,6 +150,7 @@ journal-nginx-vhost:
         - require:
             - nginx-config
             - nginx-error-pages
+            - journal-nginx-redirect-existing-paths
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
