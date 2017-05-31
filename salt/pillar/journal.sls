@@ -6,6 +6,8 @@ journal:
     observer_url: https://observer.elifesciences.org/
     base_url: null
 
+    gtm_id: null
+
     secret: ThisTokenIsNotSoSecretChangeIt
 
     session_name: journal
