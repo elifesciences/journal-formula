@@ -1,7 +1,8 @@
 parameters:
-    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks'] %}
-    {{ name }}: {{ pillar.journal.get(name) }}
+    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name' ] %}
+    {{ name }}: '{{ pillar.journal.get(name) }}'
     {% endfor %}
+    status_checks: {{ pillar.journal.get(name) }}
 
     trusted_hosts: ['^(.+\.)?elifesciences.org$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$']
 
