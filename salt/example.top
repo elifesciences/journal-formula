@@ -4,13 +4,15 @@ base:
         - elife.php7
         - elife.nginx
         - elife.nginx-php7
+        - elife.nginx-error-pages
         - elife.nodejs6
-        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
+        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
         - elife.redis-server
         {% endif %}
         {% if pillar.elife.env in ['ci', 'dev'] %}
         - elife.java
         - elife.selenium
         {% endif %}
+        - journal.curl-7-36
         - journal
         - elife.proofreader-php

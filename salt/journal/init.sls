@@ -5,12 +5,11 @@ maintenance-mode-start:
             - nginx-server-service
 
 journal-php-extensions:
-    pkg.installed:
-        - pkgs:
-            - php7.0-redis
+    cmd.run:
+        - name: apt-get install -y php7.0-redis
         - require:
             - php
-            {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
+            {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
             - redis-server
             {% endif %}
         - watch_in:
@@ -112,7 +111,7 @@ image-generation:
 
 composer-install:
     cmd.run:
-        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview'] %}
+        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
         - name: composer --no-interaction install --no-suggest --classmap-authoritative --no-dev
         {% elif pillar.elife.env != 'dev' %}
         - name: composer --no-interaction install --no-suggest --classmap-authoritative
@@ -131,24 +130,6 @@ composer-install:
             - cmd: var-directory
             - journal-php-extensions
 
-journal-nginx-error-pages:
-    file.directory:
-        - name: /srv/error-pages
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-
-    git.latest:
-        - name: git@github.com:elifesciences/error-pages.git
-        - identity: {{ pillar.elife.projects_builder.key or '' }}
-        - rev: master
-        - branch: master
-        - target: /srv/error-pages/
-        - force_fetch: True
-        - force_checkout: True
-        - force_reset: True
-        - require:
-            - file: journal-nginx-error-pages
-
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal.conf
@@ -156,7 +137,7 @@ journal-nginx-vhost:
         - template: jinja
         - require:
             - nginx-config
-            - journal-nginx-error-pages
+            - nginx-error-pages
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
@@ -166,6 +147,12 @@ maintenance-mode-end:
         - name: /etc/init.d/nginx start
         - require:
             - journal-nginx-vhost
+
+maintenance-mode-check-nginx-stays-up:
+    cmd.run:
+        - name: sleep 2 && /etc/init.d/nginx status
+        - require:
+            - maintenance-mode-end
 
 {% for title, user in pillar.journal.web_users.items() %}
 journal-nginx-authentication-{{ title }}:
@@ -224,11 +211,23 @@ headless-firefox-multimedia:
 
 # for patterns-php and other private projects access
 # in particular, building them for the dependencies-journal-update-patterns-php pipeline
-add-key-to-elife-user:
+add-private-key-to-elife-user:
     file.managed:
         - user: elife
         - name: /home/{{ pillar.elife.deploy_user.username }}/.ssh/id_rsa
         - source: salt://journal/config/home-deploy-user-.ssh-id_rsa
         - mode: 400
+        - require_in:
+            - cmd: composer-install
+
+add-public-key-to-elife-user:
+    file.managed:
+        - user: elife
+        - name: /home/{{ pillar.elife.deploy_user.username }}/.ssh/id_rsa.pub
+        - source: salt://journal/config/home-deploy-user-.ssh-id_rsa.pub
+        - mode: 444
+        - require_in:
+            - cmd: composer-install
+        
 {% endif %}
 
