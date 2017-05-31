@@ -142,6 +142,18 @@ journal-nginx-redirect-existing-paths:
             - service: nginx-server-service
             - service: php-fpm
 
+journal-nginx-robots:
+    file.managed:
+        - name: /etc/nginx/traits.d/robots.conf
+        - source: salt://journal/config/etc-nginx-traits.d-robots.conf
+        - template: jinja
+        - require:
+            - nginx-config
+            - nginx-error-pages
+        - listen_in:
+            - service: nginx-server-service
+            - service: php-fpm
+
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal.conf
@@ -151,6 +163,7 @@ journal-nginx-vhost:
             - nginx-config
             - nginx-error-pages
             - journal-nginx-redirect-existing-paths
+            - journal-nginx-robots
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
