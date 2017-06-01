@@ -1,6 +1,10 @@
 parameters:
     {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain'] %}
-    {{ name }}: {{ salt['pillar.get']('journal.' + name, default='null') }}
+    {% if pillar.journal.get(name) %}
+    {{ name }}: {{ pillar.journal.get(name) }}
+    {% else %}
+    {{ name }}: null
+    {% endif %}
     {% endfor %}
 
     trusted_hosts: ['^(.+\.)?elifesciences.org$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$']
