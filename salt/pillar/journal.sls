@@ -7,6 +7,7 @@ journal:
     base_url: null
 
     gtm_id: null
+    disqus_domain: elifesciences-staging
 
     secret: ThisTokenIsNotSoSecretChangeIt
 

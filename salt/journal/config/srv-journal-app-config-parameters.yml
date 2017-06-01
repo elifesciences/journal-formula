@@ -1,5 +1,5 @@
 parameters:
-    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id'] %}
+    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain'] %}
     {{ name }}: {{ pillar.journal.get(name, 'null') }}
     {% endfor %}
 
@@ -15,8 +15,6 @@ parameters:
     mailer_encryption: {{ pillar.journal.mailer.encryption }}
 
     crm_url: https://crm.elifesciences.org/crm/civicrm/
-
-    disqus_domain: elifesciences-staging
 
     # defaults for URL generation - host
     {% if pillar.journal.get('default_host') %}
