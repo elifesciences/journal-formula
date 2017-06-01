@@ -4,7 +4,7 @@ journal:
     api_key: key_for_authorizing_api_requests
     side_by_side_view_url: https://lens.elifesciences.org/
     observer_url: https://observer.elifesciences.org/
-    base_url: null
+    default_host: null
 
     gtm_id: null
     disqus_domain: elifesciences-staging
