@@ -100,8 +100,9 @@ journal-node-modules-manual-install:
             - journal-npm-install
 
 image-generation:
-    cmd.run:
-        - name: ./retrying-gulp.sh
+    cmd.script:
+        - name: retrying-gulp
+        - source: salt://journal/scripts/retrying-gulp-without-redis.sh
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
