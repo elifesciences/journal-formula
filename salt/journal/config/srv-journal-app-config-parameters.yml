@@ -7,7 +7,7 @@ parameters:
     {% endif %}
     {% endfor %}
 
-    trusted_hosts: ['^(.+\.)?elifesciences.org$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$']
+    trusted_hosts: ['^(.+\.)?{{ pillar.elife.domain }}$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$']
 
     redis_cache: redis://localhost
 
@@ -18,7 +18,7 @@ parameters:
     mailer_password: {{ pillar.journal.mailer.password }}
     mailer_encryption: {{ pillar.journal.mailer.encryption }}
 
-    crm_url: https://crm.elifesciences.org/crm/civicrm/
+    crm_url: https://crm.thedailybugle.org/crm/civicrm/
 
     # defaults for URL generation - host
     {% if pillar.journal.get('default_host') %}
@@ -26,7 +26,7 @@ parameters:
     {% elif salt['elife.only_on_aws']() %}
     router.request_context.host: {{ salt['elife.cfg']('project.full_hostname') }}
     {% else %}
-    router.request_context.host: dev--journal.elifesciences.org 
+    router.request_context.host: dev--journal.{{ pillar.elife.domain }} 
     {% endif %}
     
     # defaults for URL generation - scheme

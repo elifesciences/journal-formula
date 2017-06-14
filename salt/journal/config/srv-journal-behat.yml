@@ -7,7 +7,7 @@ default:
             {% if pillar.elife.env == 'dev' %}
             base_url: http://localhost/app_test.php/
             {% else %}
-            base_url: http://{{ pillar.elife.env }}--journal.elifesciences.org/
+            base_url: http://{{ pillar.elife.env }}--journal.{{ pillar.elife.domain}}/
             {% endif %}
         Behat\Symfony2Extension:
             kernel:
