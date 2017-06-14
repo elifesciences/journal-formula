@@ -18,7 +18,7 @@ parameters:
     mailer_password: {{ pillar.journal.mailer.password }}
     mailer_encryption: {{ pillar.journal.mailer.encryption }}
 
-    crm_url: https://crm.thedailybugle.org/crm/civicrm/
+    crm_url: https://crm.elifesciences.org/crm/civicrm/
 
     # defaults for URL generation - host
     {% if pillar.journal.get('default_host') %}
