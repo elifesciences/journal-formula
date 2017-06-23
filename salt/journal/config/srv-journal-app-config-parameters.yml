@@ -1,5 +1,5 @@
 parameters:
-    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain'] %}
+    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain', 'redis_cache', 'redis_http_cache'] %}
     {% if pillar.journal.get(name) %}
     {{ name }}: {{ pillar.journal.get(name) }}
     {% else %}
@@ -8,8 +8,6 @@ parameters:
     {% endfor %}
 
     trusted_hosts: ['^(.+\.)?{{ pillar.elife.domain }}$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$', '^172\.(16|17|18|19|2[0-9]|30|31)\.[0-9]+\.[0-9]+$', '^192.168\.[0-9]+\.[0-9]+$']
-
-    redis_cache: redis://localhost
 
     mailer_transport: smtp
     mailer_host: {{ pillar.journal.mailer.host }}

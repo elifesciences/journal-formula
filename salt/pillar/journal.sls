@@ -15,6 +15,9 @@ journal:
 
     web_users: {}
 
+    redis_cache: redis://localhost
+    redis_http_cache: '%redis_cache%'
+
     mailer:
         host: localhost
         port: 25
