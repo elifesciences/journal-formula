@@ -155,6 +155,17 @@ journal-nginx-robots:
             - service: nginx-server-service
             - service: php-fpm
 
+journal-nginx-strict-transport-security:
+    file.managed:
+        - name: /etc/nginx/traits.d/strict-transport-security.conf
+        - source: salt://journal/config/etc-nginx-traits.d-strict-transport-security.conf
+        - template: jinja
+        - require:
+            - nginx-config
+        - listen_in:
+            - service: nginx-server-service
+            - service: php-fpm
+
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal.conf
@@ -165,6 +176,7 @@ journal-nginx-vhost:
             - nginx-error-pages
             - journal-nginx-redirect-existing-paths
             - journal-nginx-robots
+            - journal-nginx-strict-transport-security
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
