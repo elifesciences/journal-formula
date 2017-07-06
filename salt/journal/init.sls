@@ -1,3 +1,5 @@
+{% set environments_with_critical_css = ['dev', 'end2end', 'prod'] %}
+
 maintenance-mode-start:
     cmd.run:
         - name: |
@@ -160,17 +162,20 @@ journal-nginx-vhost:
             - service: nginx-server-service
             - service: php-fpm
 
-journal-nginx-vhost-dummy:
+{% if pillar.elife.env in environments_with_critical_css %}
+journal-nginx-vhost-local-demo:
     file.managed:
-        - name: /etc/nginx/sites-enabled/journal-dummy.conf
-        - source: salt://journal/config/etc-nginx-sites-enabled-journal-dummy.conf
+        - name: /etc/nginx/sites-enabled/journal-local-demo.conf
+        - source: salt://journal/config/etc-nginx-sites-enabled-journal-local-demo.conf
         - template: jinja
         - require:
             - nginx-config
-            - nginx-error-pages
+        - require_in:
+            - cmd: running-gulp
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
+{% endif %}
 
 running-gulp:
     cmd.script:
@@ -182,7 +187,6 @@ running-gulp:
             - journal-npm-install
             - journal-node-modules-manual-install
             - composer-install
-            - journal-nginx-vhost-dummy
 
 maintenance-mode-end:
     cmd.run:
