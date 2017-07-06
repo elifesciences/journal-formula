@@ -1,6 +1,10 @@
+{% set environments_with_critical_css = ['dev', 'end2end', 'prod'] %}
+
 maintenance-mode-start:
     cmd.run:
-        - name: /etc/init.d/nginx stop
+        - name: |
+            rm -f /etc/nginx/sites-enabled/journal.conf
+            /etc/init.d/nginx reload
         - require:
             - nginx-server-service
 
@@ -99,17 +103,6 @@ journal-node-modules-manual-install:
         - require:
             - journal-npm-install
 
-image-generation:
-    cmd.script:
-        - name: retrying-gulp
-        - source: salt://journal/scripts/retrying-gulp-without-redis.sh
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - journal-npm-install
-            - journal-node-modules-manual-install
-            - composer-install
-
 composer-install:
     cmd.run:
         {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
@@ -157,8 +150,8 @@ journal-nginx-robots:
 
 journal-nginx-vhost:
     file.managed:
-        - name: /etc/nginx/sites-enabled/journal.conf
-        - source: salt://journal/config/etc-nginx-sites-enabled-journal.conf
+        - name: /etc/nginx/sites-available/journal.conf
+        - source: salt://journal/config/etc-nginx-sites-available-journal.conf
         - template: jinja
         - require:
             - nginx-config
@@ -169,9 +162,57 @@ journal-nginx-vhost:
             - service: nginx-server-service
             - service: php-fpm
 
+{% if pillar.elife.env in environments_with_critical_css %}
+journal-nginx-vhost-local-demo:
+    file.managed:
+        - name: /etc/nginx/sites-enabled/journal-local-demo.conf
+        - source: salt://journal/config/etc-nginx-sites-enabled-journal-local-demo.conf
+        - template: jinja
+        - require:
+            - nginx-config
+        - require_in:
+            - cmd: running-gulp
+        - listen_in:
+            - service: nginx-server-service
+            - service: php-fpm
+{% endif %}
+
+running-gulp:
+    cmd.script:
+        - name: retrying-gulp
+        - source: salt://journal/scripts/retrying-gulp-without-redis.sh
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-npm-install
+            - journal-node-modules-manual-install
+            - composer-install
+
+{% if pillar.elife.env in environments_with_critical_css %}
+local-demo-cache-clear:
+    cmd.run:
+        - name: bin/console cache:clear --env=demo --no-warmup
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - running-gulp
+
+local-demo-generate-critical-css:
+    cmd.run:
+        - name: echo "We will use gulp to generate critical CSS here"
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - local-demo-cache-clear
+        - require_in:
+            - cmd: maintenance-mode-end
+{% endif %}
+
 maintenance-mode-end:
     cmd.run:
-        - name: /etc/init.d/nginx start
+        - name: |
+            ln -s /etc/nginx/sites-available/journal.conf /etc/nginx/sites-enabled/journal.conf
+            /etc/init.d/nginx reload
         - require:
             - journal-nginx-vhost
 
