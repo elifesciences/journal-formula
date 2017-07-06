@@ -28,7 +28,7 @@ journal:
     status_checks:
         Articles: articles
 
-    critical_css: True # TODO: disable in dev
+    critical_css: False
 
 api_dummy:
     standalone: False
