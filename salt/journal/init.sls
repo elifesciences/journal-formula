@@ -1,6 +1,8 @@
 maintenance-mode-start:
     cmd.run:
-        - name: /etc/init.d/nginx stop
+        - name: |
+            rm -f /etc/nginx/sites-enabled/journal.conf
+            /etc/init.d/nginx restart
         - require:
             - nginx-server-service
 
@@ -157,8 +159,8 @@ journal-nginx-robots:
 
 journal-nginx-vhost:
     file.managed:
-        - name: /etc/nginx/sites-enabled/journal.conf
-        - source: salt://journal/config/etc-nginx-sites-enabled-journal.conf
+        - name: /etc/nginx/sites-available/journal.conf
+        - source: salt://journal/config/etc-nginx-sites-available-journal.conf
         - template: jinja
         - require:
             - nginx-config
@@ -171,7 +173,9 @@ journal-nginx-vhost:
 
 maintenance-mode-end:
     cmd.run:
-        - name: /etc/init.d/nginx start
+        - name: |
+            ln -s /etc/nginx/sites-available/journal.conf /etc/nginx/sites-enabled/journal.conf
+            /etc/init.d/nginx restart
         - require:
             - journal-nginx-vhost
 
