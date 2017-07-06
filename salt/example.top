@@ -17,7 +17,6 @@ base:
         - journal
         - elife.proofreader-php
         {% if pillar.journal.critical_css %}
-        - elife.redis-server # TODO: remove, only for local experimentation
         - api-dummy
         - journal.api-dummy
         {% endif %}
