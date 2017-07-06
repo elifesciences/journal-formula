@@ -7,7 +7,6 @@ parameters:
     {% else %}
     {% set remote_redis = "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort') %}
     redis_cache: {{ remote_redis }}
-    redis_http_cache: {{ remote_redis }}
     {% endif %}
 
     {% for name in standard_keys %}
