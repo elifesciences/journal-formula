@@ -2,7 +2,7 @@ maintenance-mode-start:
     cmd.run:
         - name: |
             rm -f /etc/nginx/sites-enabled/journal.conf
-            /etc/init.d/nginx restart
+            /etc/init.d/nginx reload
         - require:
             - nginx-server-service
 
@@ -188,7 +188,7 @@ maintenance-mode-end:
     cmd.run:
         - name: |
             ln -s /etc/nginx/sites-available/journal.conf /etc/nginx/sites-enabled/journal.conf
-            /etc/init.d/nginx restart
+            /etc/init.d/nginx reload
         - require:
             - journal-nginx-vhost
 
