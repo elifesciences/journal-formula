@@ -101,17 +101,6 @@ journal-node-modules-manual-install:
         - require:
             - journal-npm-install
 
-image-generation:
-    cmd.script:
-        - name: retrying-gulp
-        - source: salt://journal/scripts/retrying-gulp-without-redis.sh
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - journal-npm-install
-            - journal-node-modules-manual-install
-            - composer-install
-
 composer-install:
     cmd.run:
         {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
@@ -170,6 +159,30 @@ journal-nginx-vhost:
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
+
+journal-nginx-vhost-dummy:
+    file.managed:
+        - name: /etc/nginx/sites-enabled/journal-dummy.conf
+        - source: salt://journal/config/etc-nginx-sites-enabled-journal-dummy.conf
+        - template: jinja
+        - require:
+            - nginx-config
+            - nginx-error-pages
+        - listen_in:
+            - service: nginx-server-service
+            - service: php-fpm
+
+running-gulp:
+    cmd.script:
+        - name: retrying-gulp
+        - source: salt://journal/scripts/retrying-gulp-without-redis.sh
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-npm-install
+            - journal-node-modules-manual-install
+            - composer-install
+            - journal-nginx-vhost-dummy
 
 maintenance-mode-end:
     cmd.run:
