@@ -27,3 +27,7 @@ journal:
 
     status_checks:
         Articles: articles
+
+api_dummy:
+    standalone: False
+    pinned_revision_file: /srv/journal/api-dummy.sha1

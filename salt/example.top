@@ -16,3 +16,8 @@ base:
         - journal.curl-7-36
         - journal
         - elife.proofreader-php
+        {% if pillar.elife.env in ['dev', 'end2end', 'prod'] %}
+        - elife.redis-server
+        - api-dummy
+        - journal.api-dummy
+        {% endif %}
