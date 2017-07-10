@@ -166,7 +166,7 @@ journal-local-demo-separate-folder:
 
     cmd.run:
         - name: |
-            rsync -a --exclude='.git' --exclude 'node_modules' --exclude 'var/*' --include 'var/.gitkeep' /srv/journal/ /srv/journal-local-demo
+            rsync -a --exclude='.git' --exclude 'node_modules' --exclude 'var/*' --include 'var/.gitkeep' --delete /srv/journal/ /srv/journal-local-demo
             cd /srv/journal-local-demo
         - user: {{ pillar.elife.deploy_user.username }}
         - require:

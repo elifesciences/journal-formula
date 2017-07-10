@@ -1,16 +1,16 @@
 parameters:
     secret: unused
-    api_key: unused
-    api_url: http://localhost:8080
-    api_url_public: http://localhost:8080
+    api_key: public
+    api_url: http://localhost:8081
+    api_url_public: http://localhost:8081
     side_by_side_view_url: http://lens.localdomain
-    session_name: {{ pillar.journal.session_name }}
+    session_name: {{ pillar.journal.session_name }}_local
     status_checks: {{ pillar.journal.status_checks }}
-    gtm_id: ''
-    disqus_domain: elifesciences_staging
-    redis_cache: ''
+    gtm_id: null
+    disqus_domain: elifesciences-staging
+    redis_cache: null
 
-    trusted_hosts: '*'
+    trusted_hosts: localhost
 
     mailer_transport: smtp
     mailer_host: localhost
@@ -21,6 +21,6 @@ parameters:
 
     crm_url: ''
 
-    # defaults for URL generation - host
-    router.request_context.host: localhost:8081
+    router.request_context.host: localhost
+    router.request_context.http_port: 8080
     router.request_context.scheme: http
