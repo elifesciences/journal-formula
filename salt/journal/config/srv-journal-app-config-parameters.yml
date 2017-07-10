@@ -1,5 +1,15 @@
+{% set on_elasticache = salt['elife.cfg']('cfn.outputs.ElastiCacheHost') %}
+{% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain'] %}
+
 parameters:
-    {% for name in ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain', 'redis_cache'] %}
+    {% if not on_elasticache %}
+    {% do standard_keys.extend(['redis_cache']) %}
+    {% else %}
+    {% set remote_redis = "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort') %}
+    redis_cache: {{ remote_redis }}
+    {% endif %}
+
+    {% for name in standard_keys %}
     {% if pillar.journal.get(name) %}
     {{ name }}: {{ pillar.journal.get(name) }}
     {% else %}
