@@ -216,21 +216,13 @@ running-gulp:
             - composer-install
 
 {% if pillar.journal.critical_css %}
-local-demo-cache-clear:
-    cmd.run:
-        - name: bin/console cache:clear --env=demo --no-warmup
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - running-gulp
-
 local-demo-generate-critical-css:
     cmd.run:
         - name: echo "We will use gulp to generate critical CSS here"
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
-            - local-demo-cache-clear
+            - journal-local-demo-nginx-vhost
         - require_in:
             - cmd: maintenance-mode-end
 {% endif %}
