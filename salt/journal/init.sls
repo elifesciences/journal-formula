@@ -158,6 +158,38 @@ journal-nginx-vhost:
             - service: php-fpm
 
 {% if pillar.journal.critical_css %}
+journal-local-demo-separate-folder:
+    file.directory:
+        - name: /srv/journal-local-demo
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+
+    cmd.run:
+        - name: |
+            rsync -a --exclude='.git' --exclude 'node_modules' --exclude 'var/*' --include 'var/.gitkeep' /srv/journal/ /srv/journal-local-demo
+            cd /srv/journal-local-demo
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - file: journal-local-demo-separate-folder
+
+journal-local-demo-parameters:
+    file.managed:
+        - name: /srv/journal-local-demo/app/config/parameters.yml
+        - source: salt://journal/config/srv-journal-local-demo-app-config-parameters.yml
+        - template: jinja
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - require: 
+            - journal-local-demo-separate-folder
+
+journal-local-demo-cache-clean:
+    cmd.run:
+        - name: rm -rf var/cache/demo
+        - cwd: /srv/journal-local-demo
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-local-demo-parameters
+        
 journal-local-demo-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal-local-demo.conf
@@ -165,6 +197,7 @@ journal-local-demo-nginx-vhost:
         - template: jinja
         - require:
             - nginx-config
+            - journal-local-demo-cache-clean
         - require_in:
             - cmd: running-gulp
         - listen_in:
