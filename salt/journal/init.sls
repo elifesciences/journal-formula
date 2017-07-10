@@ -13,9 +13,6 @@ journal-php-extensions:
         - name: apt-get install -y php7.0-redis
         - require:
             - php
-            {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
-            - redis-server
-            {% endif %}
         - watch_in:
             - service: php-fpm
 
