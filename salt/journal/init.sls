@@ -1,5 +1,3 @@
-{% set environments_with_critical_css = ['dev', 'end2end', 'prod'] %}
-
 maintenance-mode-start:
     cmd.run:
         - name: |
@@ -159,8 +157,8 @@ journal-nginx-vhost:
             - service: nginx-server-service
             - service: php-fpm
 
-{% if pillar.elife.env in environments_with_critical_css %}
-journal-nginx-vhost-local-demo:
+{% if pillar.journal.critical_css %}
+journal-local-demo-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal-local-demo.conf
         - source: salt://journal/config/etc-nginx-sites-enabled-journal-local-demo.conf
@@ -185,7 +183,7 @@ running-gulp:
             - journal-node-modules-manual-install
             - composer-install
 
-{% if pillar.elife.env in environments_with_critical_css %}
+{% if pillar.journal.critical_css %}
 local-demo-cache-clear:
     cmd.run:
         - name: bin/console cache:clear --env=demo --no-warmup
