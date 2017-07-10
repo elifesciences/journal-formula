@@ -161,7 +161,7 @@ journal-nginx-vhost:
             - service: php-fpm
 
 {% if pillar.journal.critical_css %}
-journal-nginx-vhost-local-demo:
+journal-local-demo-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal-local-demo.conf
         - source: salt://journal/config/etc-nginx-sites-enabled-journal-local-demo.conf
