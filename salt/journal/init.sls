@@ -28,10 +28,6 @@ journal-repository:
         - require:
             - cmd: composer
             - maintenance-mode-start
-{% if pillar.journal.critical_css %}
-        - require_in:
-            - cmd: api-dummy-repository
-{% endif %}
 
     file.directory:
         - name: /srv/journal
