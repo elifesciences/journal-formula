@@ -28,6 +28,10 @@ journal-repository:
         - require:
             - cmd: composer
             - maintenance-mode-start
+{% if pillar.journal.critical_css %}
+        - require_in:
+            - cmd: api-dummy-repository
+{% endif %}
 
     file.directory:
         - name: /srv/journal
@@ -46,7 +50,7 @@ config-file:
         - template: jinja
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
-        - require: 
+        - require:
             - file: journal-repository
 
 # files and directories must be readable and writable by both elife and www-data
@@ -126,10 +130,8 @@ journal-nginx-redirect-existing-paths:
         - template: jinja
         - require:
             - nginx-config
-            - nginx-error-pages
         - listen_in:
             - service: nginx-server-service
-            - service: php-fpm
 
 journal-nginx-robots:
     file.managed:
@@ -138,10 +140,8 @@ journal-nginx-robots:
         - template: jinja
         - require:
             - nginx-config
-            - nginx-error-pages
         - listen_in:
             - service: nginx-server-service
-            - service: php-fpm
 
 journal-nginx-vhost:
     file.managed:
@@ -153,9 +153,6 @@ journal-nginx-vhost:
             - nginx-error-pages
             - journal-nginx-redirect-existing-paths
             - journal-nginx-robots
-        - listen_in:
-            - service: nginx-server-service
-            - service: php-fpm
 
 {% if pillar.journal.critical_css %}
 journal-local-demo-separate-folder:
@@ -170,6 +167,7 @@ journal-local-demo-separate-folder:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - file: journal-local-demo-separate-folder
+            - running-gulp
 
 journal-local-demo-parameters:
     file.managed:
@@ -178,7 +176,7 @@ journal-local-demo-parameters:
         - template: jinja
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
-        - require: 
+        - require:
             - journal-local-demo-separate-folder
 
 journal-local-demo-cache-clean:
@@ -188,7 +186,7 @@ journal-local-demo-cache-clean:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-local-demo-parameters
-        
+
 journal-local-demo-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-enabled/journal-local-demo.conf
@@ -198,7 +196,6 @@ journal-local-demo-nginx-vhost:
             - nginx-config
         - listen_in:
             - service: nginx-server-service
-            - service: php-fpm
 {% endif %}
 
 running-gulp:
@@ -219,7 +216,11 @@ local-demo-generate-critical-css:
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
+            - api-dummy-composer-install
+            - api-dummy-nginx-vhost
             - journal-local-demo-nginx-vhost
+            - journal-local-demo-cache-clean
+            - php-fpm
         - require_in:
             - cmd: maintenance-mode-end
 {% endif %}
@@ -231,6 +232,7 @@ maintenance-mode-end:
             /etc/init.d/nginx reload
         - require:
             - journal-nginx-vhost
+            - running-gulp
 
 maintenance-mode-check-nginx-stays-up:
     cmd.run:
