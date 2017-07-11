@@ -1,3 +1,22 @@
+journal-local-demo-nginx-vhost:
+    file.managed:
+        - name: /etc/nginx/sites-enabled/journal-local-demo.conf
+        - source: salt://journal/config/etc-nginx-sites-enabled-journal-local-demo.conf
+        - template: jinja
+        - require:
+            - nginx-config
+        - require_in:
+            - cmd: maintenance-mode-start
+
+api-dummy-nginx-vhost:
+    file.managed:
+        - name: /etc/nginx/sites-enabled/api-dummy.conf
+        - source: salt://journal/config/etc-nginx-sites-enabled-api-dummy.conf
+        - require:
+            - nginx-config
+        - require_in:
+            - cmd: maintenance-mode-start
+
 api-dummy-journal-repository:
     cmd.run:
         - name: echo "journal-repository is ready for api-dummy-repository"
@@ -5,13 +24,6 @@ api-dummy-journal-repository:
             - journal-repository
         - require_in:
             - cmd: api-dummy-repository
-
-api-dummy-nginx-vhost:
-    file.managed:
-        - name: /etc/nginx/sites-enabled/api-dummy.conf
-        - source: salt://journal/config/etc-nginx-sites-enabled-api-dummy.conf
-        - listen_in:
-            - service: nginx-server-service
 
 journal-local-demo-separate-folder:
     file.directory:
@@ -44,16 +56,6 @@ journal-local-demo-cache-clean:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-local-demo-parameters
-
-journal-local-demo-nginx-vhost:
-    file.managed:
-        - name: /etc/nginx/sites-enabled/journal-local-demo.conf
-        - source: salt://journal/config/etc-nginx-sites-enabled-journal-local-demo.conf
-        - template: jinja
-        - require:
-            - nginx-config
-        - listen_in:
-            - service: nginx-server-service
 
 generate-critical-css:
     cmd.run:
