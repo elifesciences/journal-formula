@@ -196,9 +196,6 @@ journal-local-demo-nginx-vhost:
         - template: jinja
         - require:
             - nginx-config
-            - journal-local-demo-cache-clean
-        - require_in:
-            - cmd: running-gulp
         - listen_in:
             - service: nginx-server-service
             - service: php-fpm
