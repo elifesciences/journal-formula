@@ -46,7 +46,7 @@ config-file:
         - template: jinja
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
-        - require: 
+        - require:
             - file: journal-repository
 
 # files and directories must be readable and writable by both elife and www-data
@@ -126,10 +126,8 @@ journal-nginx-redirect-existing-paths:
         - template: jinja
         - require:
             - nginx-config
-            - nginx-error-pages
         - listen_in:
             - service: nginx-server-service
-            - service: php-fpm
 
 journal-nginx-robots:
     file.managed:
@@ -138,10 +136,8 @@ journal-nginx-robots:
         - template: jinja
         - require:
             - nginx-config
-            - nginx-error-pages
         - listen_in:
             - service: nginx-server-service
-            - service: php-fpm
 
 journal-nginx-vhost:
     file.managed:
@@ -153,24 +149,6 @@ journal-nginx-vhost:
             - nginx-error-pages
             - journal-nginx-redirect-existing-paths
             - journal-nginx-robots
-        - listen_in:
-            - service: nginx-server-service
-            - service: php-fpm
-
-{% if pillar.journal.critical_css %}
-journal-local-demo-nginx-vhost:
-    file.managed:
-        - name: /etc/nginx/sites-enabled/journal-local-demo.conf
-        - source: salt://journal/config/etc-nginx-sites-enabled-journal-local-demo.conf
-        - template: jinja
-        - require:
-            - nginx-config
-        - require_in:
-            - cmd: running-gulp
-        - listen_in:
-            - service: nginx-server-service
-            - service: php-fpm
-{% endif %}
 
 running-gulp:
     cmd.script:
@@ -183,26 +161,6 @@ running-gulp:
             - journal-node-modules-manual-install
             - composer-install
 
-{% if pillar.journal.critical_css %}
-local-demo-cache-clear:
-    cmd.run:
-        - name: bin/console cache:clear --env=demo --no-warmup
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - running-gulp
-
-local-demo-generate-critical-css:
-    cmd.run:
-        - name: echo "We will use gulp to generate critical CSS here"
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - local-demo-cache-clear
-        - require_in:
-            - cmd: maintenance-mode-end
-{% endif %}
-
 maintenance-mode-end:
     cmd.run:
         - name: |
@@ -210,6 +168,7 @@ maintenance-mode-end:
             /etc/init.d/nginx reload
         - require:
             - journal-nginx-vhost
+            - running-gulp
 
 maintenance-mode-check-nginx-stays-up:
     cmd.run:
