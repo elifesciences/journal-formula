@@ -8,7 +8,7 @@ redis_present () {
 if redis_present; then
     sudo /etc/init.d/redis-server stop
 fi
-./retrying-gulp.sh
+retry node_modules/.bin/gulp 3
 if redis_present; then
     sudo /etc/init.d/redis-server start
 fi
