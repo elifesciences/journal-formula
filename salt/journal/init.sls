@@ -98,6 +98,14 @@ journal-node-modules-manual-install:
         - require:
             - journal-npm-install
 
+journal-critical-css:
+    file.directory:
+        - name: /srv/journal/build/critical-css
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-repository
+
 composer-install:
     cmd.run:
         {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
@@ -118,6 +126,7 @@ composer-install:
             - file: config-file
             - cmd: var-directory
             - journal-php-extensions
+            - journal-critical-css
 
 journal-nginx-redirect-existing-paths:
     file.managed:
