@@ -33,7 +33,9 @@ journal-local-demo-separate-folder:
 
     cmd.run:
         - name: |
-            rsync -a --exclude='.git' --exclude 'app/config/parameters.yml' --include 'build/rev-manifest.json' --include 'build/critical-css/.gitkeep' --exclude 'build/*' --exclude 'node_modules' --include 'var/.gitkeep' --exclude 'var/*' --delete /srv/journal/ /srv/journal-local-demo
+            rsync -a --exclude='.git' --exclude 'app/config/parameters.yml' --include 'build/rev-manifest.json' --exclude 'build/*' --exclude 'node_modules' --include 'var/.gitkeep' --exclude 'var/*' --delete /srv/journal/ /srv/journal-local-demo
+            cp --parents build/critical-css/.gitkeep /srv/journal-local-demo
+        - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - file: journal-local-demo-separate-folder
