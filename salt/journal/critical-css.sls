@@ -49,21 +49,12 @@ journal-local-demo-parameters:
         - require:
             - journal-local-demo-separate-folder
 
-journal-local-demo-critical-css:
-    file.directory:
-        - name: /srv/journal-local-demo/build/critical-css
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - journal-local-demo-separate-folder
-
 journal-local-demo-cache-clean:
     cmd.run:
         - name: bin/console cache:clear --env=demo
         - cwd: /srv/journal-local-demo
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
-            - journal-local-demo-critical-css
             - journal-local-demo-parameters
 
 generate-critical-css:
