@@ -59,7 +59,7 @@ journal-local-demo-cache-clean:
 
 generate-critical-css:
     cmd.run:
-        - name: retry "node_modules/.bin/gulp critical-css:generate" 3
+        - name: node_modules/.bin/gulp critical-css:generate
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
