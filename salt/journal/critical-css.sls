@@ -59,7 +59,7 @@ journal-local-demo-cache-clean:
 
 generate-critical-css:
     cmd.run:
-        - name: echo "We will use gulp to generate critical CSS here"
+        - name: node_modules/.bin/gulp critical-css:generate
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
