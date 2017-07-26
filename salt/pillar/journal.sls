@@ -29,6 +29,10 @@ journal:
 
     critical_css: False
 
+    # requests for sub.domain.tld are redirected to domain.tld/whatever
+    #subdomain_redirects:
+    #    subdomain: /whatever
+
 api_dummy:
     standalone: False
     pinned_revision_file: /srv/journal/api-dummy.sha1
