@@ -28,12 +28,10 @@ journal:
         Articles: articles
 
     critical_css: False
-    
+
     # requests for sub.domain.tld are redirected to domain.tld/whatever
-    subdomain_redirects:
-        2016: 
-            path: /inside-elife
-            permanent: True
+    #subdomain_redirects:
+    #    subdomain: /whatever
 
 api_dummy:
     standalone: False
