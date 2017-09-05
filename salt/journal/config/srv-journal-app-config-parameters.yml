@@ -1,5 +1,5 @@
 {% set on_elasticache = salt['elife.cfg']('cfn.outputs.ElastiCacheHost') %}
-{% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain'] %}
+{% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain', 'oauth2_client_id', 'oauth2_client_secret']  %}
 
 parameters:
     {% if not on_elasticache %}
