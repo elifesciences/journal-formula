@@ -27,6 +27,9 @@ journal:
     status_checks:
         Articles: articles
 
+    oauth2_client_id: some-id
+    oauth2_client_secret: ThisIsASecret
+
     critical_css: False
 
     # requests for sub.domain.tld are redirected to domain.tld/whatever
