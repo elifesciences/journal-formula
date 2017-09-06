@@ -11,7 +11,9 @@ parameters:
 
     {% for name in standard_keys %}
     {% set value = pillar.journal.get(name, 'null') %}
-    {% if value is not none %}
+    {% if value == '' %}
+    {{ name }}: ''
+    {% elif value is not none %}
     {{ name }}: {{ value }}
     {% else %}
     {{ name }}: null
