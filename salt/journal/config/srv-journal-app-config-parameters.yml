@@ -10,7 +10,12 @@ parameters:
     {% endif %}
 
     {% for name in standard_keys %}
-    {{ name }}: {{ pillar.journal.get(name, 'null') }}
+    {% set value = pillar.journal.get(name, 'null') %}
+    {% if value is not none %}
+    {{ name }}: {{ value }}
+    {% else %}
+    {{ name }}: null
+    {% endif %}
     {% endfor %}
 
     trusted_hosts: ['^(.+\.)?{{ pillar.elife.domain }}$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$', '^172\.(16|17|18|19|2[0-9]|30|31)\.[0-9]+\.[0-9]+$', '^192.168\.[0-9]+\.[0-9]+$']
