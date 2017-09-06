@@ -12,6 +12,9 @@ parameters:
 
     trusted_hosts: localhost
 
+    oauth2_client_id: journal-local-demo
+    oauth2_client_secret: fakesecret
+
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_port: ~
