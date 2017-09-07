@@ -16,6 +16,7 @@ journal:
     web_users: {}
 
     redis_cache: redis://localhost
+    redis: redis://localhost
 
     mailer:
         host: localhost
