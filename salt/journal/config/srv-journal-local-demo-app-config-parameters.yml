@@ -8,7 +8,6 @@ parameters:
     status_checks: {{ pillar.journal.status_checks }}
     gtm_id: ~
     disqus_domain: elifesciences-staging
-    redis_cache: ~
     redis: ~
 
     trusted_hosts: localhost

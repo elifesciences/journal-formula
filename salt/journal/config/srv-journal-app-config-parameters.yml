@@ -3,10 +3,9 @@
 
 parameters:
     {% if not on_elasticache %}
-    {% do standard_keys.extend(['redis_cache', 'redis']) %}
+    {% do standard_keys.extend(['redis']) %}
     {% else %}
     {% set remote_redis = "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort') %}
-    redis_cache: {{ remote_redis }}
     redis: {{ remote_redis }}
     {% endif %}
 
