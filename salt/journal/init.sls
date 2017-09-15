@@ -182,6 +182,7 @@ journal-nginx-authentication-{{ title }}:
         - name: {{ user.username }}
         - password: {{ user.password }}
         - htpasswd_file: /etc/nginx/journal.htpasswd
+        - update: True
         - require:
             - journal-nginx-vhost
 {% endfor %}
