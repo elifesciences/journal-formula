@@ -215,23 +215,6 @@ journal-behat:
         - require:
             - file: journal-repository
 
-headless-firefox-multimedia:
-    pkg.installed:
-        - pkgs:
-            - mplayer
-            - linux-sound-base
-
-    cmd.run:
-        - name: sudo apt-get -y install linux-image-extra-$(uname -r)
-        - require:
-            - pkg: headless-firefox-multimedia
-
-    kmod.present:
-        - name: snd_dummy
-        - persist: True
-        - require:
-            - cmd: headless-firefox-multimedia
-
 # for patterns-php and other private projects access
 # in particular, building them for the dependencies-journal-update-patterns-php pipeline
 add-private-key-to-elife-user:
