@@ -32,6 +32,9 @@ journal:
 
     critical_css: False
 
+    tenon:
+        api_key: 
+
     # requests for sub.domain.tld are redirected to domain.tld/whatever
     #subdomain_redirects:
     #    subdomain: /whatever
