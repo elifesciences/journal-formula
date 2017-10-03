@@ -10,7 +10,8 @@ parameters:
     disqus_domain: elifesciences-staging
     redis: ~
 
-    trusted_hosts: localhost
+    # port should only be open where allowed anyway
+    trusted_hosts: ['localhost', '{{ pillar.elife.env }}--journal.{{ pillar.elife.domain }}'
 
     oauth2_client_id: journal-local-demo
     oauth2_client_secret: fakesecret
