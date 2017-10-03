@@ -17,5 +17,6 @@ base:
         - elife.proofreader-php
         {% if pillar.journal.critical_css %}
         - api-dummy
+        - journal.local-demo
         - journal.critical-css
         {% endif %}
