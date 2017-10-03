@@ -1,0 +1,1 @@
+elifeFormula('journal', '/srv/journal')
