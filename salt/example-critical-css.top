@@ -18,3 +18,4 @@ base:
         - journal.tenon
         - api-dummy
         - journal.local-demo
+        - journal.critical-css
