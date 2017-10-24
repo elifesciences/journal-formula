@@ -153,7 +153,7 @@ journal-nginx-vhost:
 running-gulp:
     {% if pillar.elife.env in ['end2end', 'prod'] %}
     # using Elasticache so no local Redis is present
-    cmd.name:
+    cmd.run:
         - name: retry node_modules/.bin/gulp 3
     {% else %}
     cmd.script:
