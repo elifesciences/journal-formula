@@ -5,7 +5,8 @@ parameters:
     api_url_public: http://localhost:8081
     side_by_side_view_url: http://localhost:8080/_lens/
     session_name: {{ pillar.journal.session_name }}_local
-    status_checks: {{ pillar.journal.status_checks }}
+    status_checks: 
+        API Dummy: ping
     gtm_id: ~
     disqus_domain: elifesciences-staging
     redis: ~
