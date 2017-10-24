@@ -4,11 +4,11 @@
 parameters:
     {% if pillar.journal.get('redis') == false %}
     redis: null
-    {% elif not on_elasticache %}
-    {% do standard_keys.extend(['redis']) %}
-    {% else %}
+    {% elif on_elasticache %}
     {% set remote_redis = "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort') %}
     redis: {{ remote_redis }}
+    {% else %}
+    {% do standard_keys.extend(['redis']) %}
     {% endif %}
 
     {% for name in standard_keys %}
