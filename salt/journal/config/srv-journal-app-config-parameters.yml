@@ -2,7 +2,9 @@
 {% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain', 'oauth2_client_id', 'oauth2_client_secret']  %}
 
 parameters:
-    {% if not on_elasticache %}
+    {% if pillar.journal.get('redis') == false %}
+    redis: null
+    {% elif not on_elasticache %}
     {% do standard_keys.extend(['redis']) %}
     {% else %}
     {% set remote_redis = "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort') %}
