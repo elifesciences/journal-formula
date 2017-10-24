@@ -151,9 +151,15 @@ journal-nginx-vhost:
             - journal-nginx-robots
 
 running-gulp:
+    {% if pillar.elife.env in ['end2end', 'prod'] %}
+    # using Elasticache so no local Redis is present
+    cmd.name:
+        - name: retry node_modules/.bin/gulp 3
+    {% else %}
     cmd.script:
         - name: retrying-gulp
         - source: salt://journal/scripts/retrying-gulp-without-redis.sh
+    {% endif %}
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
