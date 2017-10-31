@@ -29,3 +29,5 @@ parameters:
     router.request_context.host: localhost
     router.request_context.http_port: 8080
     router.request_context.scheme: http
+
+    feature_can_view_webp_countries: []
