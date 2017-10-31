@@ -39,6 +39,8 @@ journal:
     #subdomain_redirects:
     #    subdomain: /whatever
 
+    feature_can_view_webp_countries: []
+
 api_dummy:
     standalone: False
     pinned_revision_file: /srv/journal/api-dummy.sha1
