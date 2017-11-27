@@ -30,4 +30,9 @@ parameters:
     router.request_context.http_port: 8080
     router.request_context.scheme: http
 
+    hypothesis_api: https://hypothes.is/api/
+    hypothesis_authority: some-authority
+    hypothesis_client_id: some-id
+    hypothesis_client_secret: ThisIsASecret
+
     feature_can_view_webp_countries: []

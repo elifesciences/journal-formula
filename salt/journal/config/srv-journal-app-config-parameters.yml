@@ -1,5 +1,5 @@
 {% set on_elasticache = salt['elife.cfg']('cfn.outputs.ElastiCacheHost') %}
-{% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain', 'oauth2_client_id', 'oauth2_client_secret', 'feature_can_view_webp_countries']  %}
+{% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain', 'oauth2_client_id', 'oauth2_client_secret', 'hypothesis_api', 'hypothesis_authority', 'hypothesis_client_id', 'hypothesis_client_secret', 'feature_can_view_webp_countries']  %}
 
 parameters:
     {% if pillar.journal.get('redis') == false %}

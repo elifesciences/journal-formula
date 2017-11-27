@@ -39,6 +39,11 @@ journal:
     #subdomain_redirects:
     #    subdomain: /whatever
 
+    hypothesis_api: https://hypothes.is/api/
+    hypothesis_authority: some-authority
+    hypothesis_client_id: some-id
+    hypothesis_client_secret: ThisIsASecret
+
     feature_can_view_webp_countries: []
 
 api_dummy:
