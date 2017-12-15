@@ -53,8 +53,10 @@ journal-local-demo-parameters:
 
 journal-local-demo-cache-clean:
     cmd.run:
-        - name: bin/console cache:clear --env=demo
+        - name: composer run post-install-cmd
         - cwd: /srv/journal-local-demo
         - user: {{ pillar.elife.deploy_user.username }}
+        - env:
+            - SYMFONY_ENV: demo
         - require:
             - journal-local-demo-parameters
