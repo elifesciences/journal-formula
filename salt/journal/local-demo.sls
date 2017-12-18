@@ -58,3 +58,14 @@ journal-local-demo-cache-clean:
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-local-demo-separate-folder
+
+journal-local-demo-ready:
+    cmd.run:
+        - name: echo "journal-local-demo is ready"
+        - require:
+            - api-dummy-composer-install
+            - api-dummy-nginx-vhost
+            - journal-local-demo-cache-clean
+            - journal-local-demo-parameters
+            - nginx-server-service
+            - php-fpm
