@@ -11,6 +11,7 @@ parameters:
     disqus_domain: elifesciences-staging
     # deprecated
     redis: ~
+    # end of deprecated
     redis_cache: ~
     redis_sessions: ~
 

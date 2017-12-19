@@ -10,6 +10,23 @@ parameters:
     {% else %}
     {% do standard_keys.extend(['redis']) %}
     {% endif %}
+    # end of deprecated
+
+    {% if pillar.journal.get('redis_cache') == false %}
+    redis_cache: null
+    {% elif salt['elife.cfg']('cfn.outputs.ElastiCacheHost1') %}
+    redis_cache: {{ "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost1') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort1') }}
+    {% else %}
+    {% do standard_keys.extend(['redis_cache']) %}
+    {% endif %}
+
+    {% if pillar.journal.get('redis_sessions') == false %}
+    redis_sessions: null
+    {% elif salt['elife.cfg']('cfn.outputs.ElastiCacheHost2') %}
+    redis_sessions: {{ "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost2') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort2') }}
+    {% else %}
+    {% do standard_keys.extend(['redis_sessions']) %}
+    {% endif %}
 
     {% for name in standard_keys %}
     {% set value = pillar.journal.get(name, 'null') %}
