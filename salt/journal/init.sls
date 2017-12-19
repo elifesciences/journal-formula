@@ -71,6 +71,14 @@ var-directory:
         - require:
             - file: var-directory
 
+journal-cache-clean:
+    cmd.run:
+        - name: rm -rf var/cache/
+        - cwd: /srv/journal/
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - var-directory
+
 npm-build-dependencies:
     pkg.installed:
         - pkgs:
@@ -116,7 +124,7 @@ composer-install:
             - COMPOSER_DISCARD_CHANGES: 'true'
         - require:
             - file: config-file
-            - cmd: var-directory
+            - journal-cache-clean
             - journal-php-extensions
 
 journal-nginx-redirect-existing-paths:
