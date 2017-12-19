@@ -1,16 +1,31 @@
 {% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'disqus_domain', 'oauth2_client_id', 'oauth2_client_secret', 'hypothesis_api', 'hypothesis_authority', 'hypothesis_client_id', 'hypothesis_client_secret']  %}
 
 parameters:
+    # deprecated
     {% if pillar.journal.get('redis') == false %}
     redis: null
-    {% elif salt['elife.cfg']('cfn.outputs.ElastiCacheHost') %}
-    {% set remote_redis = "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort') %}
-    redis: {{ remote_redis }}
     {% elif salt['elife.cfg']('cfn.outputs.ElastiCacheHost1') %}
     {% set remote_redis = "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost1') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort1') %}
     redis: {{ remote_redis }}
     {% else %}
     {% do standard_keys.extend(['redis']) %}
+    {% endif %}
+    # end of deprecated
+
+    {% if pillar.journal.get('redis_cache') == false %}
+    redis_cache: null
+    {% elif salt['elife.cfg']('cfn.outputs.ElastiCacheHost1') %}
+    redis_cache: {{ "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost1') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort1') }}
+    {% else %}
+    {% do standard_keys.extend(['redis_cache']) %}
+    {% endif %}
+
+    {% if pillar.journal.get('redis_sessions') == false %}
+    redis_sessions: null
+    {% elif salt['elife.cfg']('cfn.outputs.ElastiCacheHost2') %}
+    redis_sessions: {{ "redis://" + salt['elife.cfg']('cfn.outputs.ElastiCacheHost2') + ":" + salt['elife.cfg']('cfn.outputs.ElastiCachePort2') }}
+    {% else %}
+    {% do standard_keys.extend(['redis_sessions']) %}
     {% endif %}
 
     {% for name in standard_keys %}

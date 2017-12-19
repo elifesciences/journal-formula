@@ -9,7 +9,11 @@ parameters:
         API Dummy: ping
     gtm_id: ~
     disqus_domain: elifesciences-staging
+    # deprecated
     redis: ~
+    # end of deprecated
+    redis_cache: ~
+    redis_sessions: ~
 
     # port should only be open where allowed anyway
     trusted_hosts: ['localhost', '{{ pillar.elife.env }}--journal.{{ pillar.elife.domain }}']
