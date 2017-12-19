@@ -44,8 +44,6 @@ journal:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
-    feature_can_view_webp_countries: []
-
 api_dummy:
     standalone: False
     pinned_revision_file: /srv/journal/api-dummy.sha1
