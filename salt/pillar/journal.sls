@@ -15,7 +15,9 @@ journal:
 
     web_users: {}
 
+    # deprecated
     redis: redis://localhost
+    # end of deprecated
     redis_cache: redis://localhost
     redis_sessions: redis://localhost
 
