@@ -9,9 +9,7 @@ parameters:
         API Dummy: ping
     gtm_id: ~
     disqus_domain: elifesciences-staging
-    # deprecated
-    redis: ~
-    # end of deprecated
+
     redis_cache: ~
     redis_sessions: ~
 
