@@ -18,7 +18,8 @@ parameters:
     {% endif %}
 
     {% for name in standard_keys %}
-    {{ name }}: {{ pillar.journal.get(name)|yaml }}
+    {{ name }}:
+        {{ pillar.journal.get(name)|yaml(False)|indent(8) }}
     {% endfor %}
 
     trusted_hosts: ['^(.+\.)?{{ pillar.elife.domain }}$', 'localhost', '^10\.[0-9]+\.[0-9]+\.[0-9]+$', '^172\.(16|17|18|19|2[0-9]|30|31)\.[0-9]+\.[0-9]+$', '^192.168\.[0-9]+\.[0-9]+$']
