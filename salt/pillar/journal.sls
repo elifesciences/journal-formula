@@ -15,7 +15,8 @@ journal:
 
     web_users: {}
 
-    redis: redis://localhost
+    redis_cache: redis://localhost
+    redis_sessions: redis://localhost
 
     mailer:
         host: localhost
@@ -44,7 +45,7 @@ journal:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
-    feature_can_view_webp_countries: []
+    feature_can_always_use_hypothesis: false
 
 api_dummy:
     standalone: False

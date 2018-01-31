@@ -9,7 +9,9 @@ parameters:
         API Dummy: ping
     gtm_id: ~
     disqus_domain: elifesciences-staging
-    redis: ~
+
+    redis_cache: ~
+    redis_sessions: ~
 
     # port should only be open where allowed anyway
     trusted_hosts: ['localhost', '{{ pillar.elife.env }}--journal.{{ pillar.elife.domain }}']
@@ -35,4 +37,4 @@ parameters:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
-    feature_can_view_webp_countries: []
+    feature_can_always_use_hypothesis: true
