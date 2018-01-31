@@ -1,5 +1,5 @@
 npm-critical-css-build-dependencies:
-    pkg.installed:
+    pkg.latest:
         - pkgs:
             # from https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
             - gconf-service
