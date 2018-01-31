@@ -43,7 +43,7 @@ npm-critical-css-build-dependencies:
 
 generate-critical-css:
     cmd.run:
-        - name: node_modules/.bin/gulp critical-css:generate
+        - name: node_modules/.bin/gulp critical-css:generate && ./check_critical_css.sh
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
