@@ -7,7 +7,6 @@ journal:
     default_host: null
 
     gtm_id: null
-    disqus_domain: elifesciences-staging
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
@@ -44,8 +43,6 @@ journal:
     hypothesis_authority: some-authority
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
-
-    feature_can_always_use_hypothesis: false
 
 api_dummy:
     standalone: False
