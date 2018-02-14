@@ -35,3 +35,5 @@ parameters:
     hypothesis_authority: some-authority
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
+
+    subject_rewrites: []
