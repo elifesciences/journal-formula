@@ -5,7 +5,7 @@ default:
     extensions:
         Behat\MinkExtension:
             {% if pillar.elife.env == 'dev' %}
-            base_url: http://localhost/app_test.php/
+            base_url: http://localhost/app.php/
             {% else %}
             base_url: http://{{ pillar.elife.env }}--journal.{{ pillar.elife.domain}}/
             {% endif %}
