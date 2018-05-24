@@ -7,6 +7,7 @@ journal:
     default_host: null
 
     gtm_id: null
+    cookie_consent: false
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
