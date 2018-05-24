@@ -8,6 +8,7 @@ parameters:
     status_checks: 
         API Dummy: ping
     gtm_id: ~
+    cookie_consent: false
 
     redis_cache: ~
     redis_sessions: ~
