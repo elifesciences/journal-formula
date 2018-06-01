@@ -55,9 +55,19 @@ journal-local-demo-cache-clean:
     cmd.run:
         - name: rm -rf var/cache/
         - cwd: /srv/journal-local-demo
-        - user: {{ pillar.elife.deploy_user.username }}
         - require:
             - journal-local-demo-separate-folder
+
+journal-local-demo-cache-warmup:
+    cmd.run:
+        - name: bin/console cache:warmup
+        - cwd: /srv/journal-local-demo
+        - user: {{ pillar.elife.webserver.username }}
+        - env:
+            - APP_ENV: demo
+        - require:
+            - journal-local-demo-cache-clean
+            - journal-local-demo-parameters
 
 journal-local-demo-ready:
     cmd.run:
@@ -65,7 +75,6 @@ journal-local-demo-ready:
         - require:
             - api-dummy-composer-install
             - api-dummy-nginx-vhost
-            - journal-local-demo-cache-clean
-            - journal-local-demo-parameters
+            - journal-local-demo-cache-warmup
             - nginx-server-service
             - php-fpm
