@@ -71,14 +71,6 @@ var-directory:
         - require:
             - file: var-directory
 
-journal-cache-clean:
-    cmd.run:
-        - name: rm -rf var/cache/
-        - cwd: /srv/journal/
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - var-directory
-
 npm-build-dependencies:
     pkg.installed:
         - pkgs:
@@ -117,15 +109,29 @@ composer-install:
         {% endif %}
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
-        # to correctly write into var/
-        - umask: 002
         - env:
-            - SYMFONY_ENV: {{ pillar.elife.env }}
             - COMPOSER_DISCARD_CHANGES: 'true'
         - require:
             - file: config-file
-            - journal-cache-clean
             - journal-php-extensions
+
+journal-cache-clean:
+    cmd.run:
+        - name: rm -rf var/cache/
+        - cwd: /srv/journal/
+        - require:
+            - var-directory
+
+journal-cache-warmup:
+    cmd.run:
+        - name: bin/console cache:warmup
+        - cwd: /srv/journal/
+        - user: {{ pillar.elife.webserver.username }}
+        - env:
+            - APP_ENV: {{ pillar.elife.env }}
+        - require:
+            - composer-install
+            - journal-cache-clean
 
 journal-assets-install:
     cmd.run:
@@ -133,9 +139,9 @@ journal-assets-install:
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
         - env:
-            - SYMFONY_ENV: {{ pillar.elife.env }}
+            - APP_ENV: {{ pillar.elife.env }}
         - require:
-            - composer-install
+            - journal-cache-warmup
 
 journal-nginx-redirect-existing-paths:
     file.managed:
