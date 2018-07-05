@@ -1,4 +1,4 @@
-{% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'cookie_consent', 'oauth2_client_id', 'oauth2_client_secret', 'hypothesis_api', 'hypothesis_authority', 'hypothesis_client_id', 'hypothesis_client_secret', 'subject_rewrites']  %}
+{% set standard_keys = ['secret', 'api_key', 'api_url', 'api_url_public', 'side_by_side_view_url', 'session_name', 'status_checks', 'gtm_id', 'cookie_consent', 'oauth2_client_id', 'oauth2_client_secret', 'hypothesis_api', 'hypothesis_authority', 'hypothesis_client_id', 'hypothesis_client_secret', 'cache_control', 'subject_rewrites']  %}
 
 parameters:
     {% if pillar.journal.get('redis_cache') == false %}
@@ -39,10 +39,6 @@ parameters:
     mailer_encryption: {{ pillar.journal.mailer.encryption }}
 
     crm_url: https://crm.elifesciences.org/crm/civicrm/
-
-    cache_max_age: {{ pillar.journal.cache.max_age }}
-    cache_stale_while_revalidate: {{ pillar.journal.cache.stale_while_revalidate }}
-    cache_stale_if_error: {{ pillar.journal.cache.stale_if_error }}
 
     # defaults for URL generation - host
     {% if pillar.journal.get('default_host') %}
