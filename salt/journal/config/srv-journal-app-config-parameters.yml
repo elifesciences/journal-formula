@@ -40,6 +40,10 @@ parameters:
 
     crm_url: https://crm.elifesciences.org/crm/civicrm/
 
+    cache_max_age: {{ pillar.journal.cache.max_age }}
+    cache_stale_while_revalidate: {{ pillar.journal.cache.stale_while_revalidate }}
+    cache_stale_if_error: {{ pillar.journal.cache.stale_if_error }}
+
     # defaults for URL generation - host
     {% if pillar.journal.get('default_host') %}
     router.request_context.host: {{ pillar.journal.get('default_host') }}

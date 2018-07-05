@@ -38,3 +38,7 @@ parameters:
     hypothesis_client_secret: ThisIsASecret
 
     subject_rewrites: []
+
+    cache_max_age: 0
+    cache_stale_while_revalidate: 0
+    cache_stale_if_error: 0

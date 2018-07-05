@@ -45,6 +45,11 @@ journal:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
+    cache:
+        max_age: 300
+        stale_while_revalidate: 300
+        stale_if_error: 86400
+
     subject_rewrites: []
 
 api_dummy:
