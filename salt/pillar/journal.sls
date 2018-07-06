@@ -45,6 +45,8 @@ journal:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
+    cache_control: private, no-cache, no-store, must-revalidate
+
     subject_rewrites: []
 
 api_dummy:
