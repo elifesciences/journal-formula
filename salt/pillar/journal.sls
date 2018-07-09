@@ -36,9 +36,9 @@ journal:
     tenon:
         api_key: 
 
-    # requests for sub.domain.tld are redirected to domain.tld/whatever
     #subdomain_redirects:
-    #    subdomain: /whatever
+    #    subdomain1: /bar # subdomain1.domain.tld/foo redirected to domain.tld/bar
+    #    subdomain2:      # subdomain2.domain.tld/foo redirected to domain.tld/foo
 
     hypothesis_api: https://hypothes.is/api/
     hypothesis_authority: some-authority
