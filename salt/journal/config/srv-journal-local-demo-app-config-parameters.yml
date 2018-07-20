@@ -40,3 +40,5 @@ parameters:
     subject_rewrites: []
 
     cache_control: private, no-cache, no-store, must-revalidate
+
+    feature_digest_channel: true
