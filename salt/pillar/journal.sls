@@ -49,6 +49,8 @@ journal:
 
     subject_rewrites: []
 
+    feature_digest_channel: true
+
 api_dummy:
     standalone: False
     pinned_revision_file: /srv/journal/api-dummy.sha1
