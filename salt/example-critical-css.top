@@ -10,7 +10,6 @@ base:
         - elife.redis-server
         - journal.curl-7-36
         - journal
-        - elife.proofreader-php
         - api-dummy
         - journal.local-demo
         - journal.critical-css
