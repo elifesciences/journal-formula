@@ -11,7 +11,6 @@ base:
         - journal.curl-7-36
         - journal
         - elife.proofreader-php
-        - journal.tenon
         - api-dummy
         - journal.local-demo
         - journal.critical-css
