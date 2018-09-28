@@ -6,6 +6,8 @@ journal:
     observer_url: https://observer.elifesciences.org/
     default_host: null
 
+    submit_url: https://submit.elifesciences.org/
+
     gtm_id: null
     cookie_consent: false
 
@@ -45,11 +47,14 @@ journal:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
+    xpub_secret: ThisIsASecret
+
     cache_control: private, no-cache, no-store, must-revalidate
 
     subject_rewrites: []
 
     feature_digest_channel: true
+    feature_xpub: false
 
 api_dummy:
     standalone: False
