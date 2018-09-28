@@ -47,7 +47,8 @@ journal:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
-    xpub_secret: ThisIsASecret
+    xpub_client_id: some-id
+    xpub_client_secret: ThisIsASecret
 
     cache_control: private, no-cache, no-store, must-revalidate
 
