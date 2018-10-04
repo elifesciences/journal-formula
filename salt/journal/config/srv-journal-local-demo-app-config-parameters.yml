@@ -7,6 +7,7 @@ parameters:
     session_name: {{ pillar.journal.session_name }}_local
     status_checks: 
         API Dummy: ping
+    submit_url: https://submit.elifesciences.org/
     gtm_id: ~
     cookie_consent: false
 
@@ -37,8 +38,12 @@ parameters:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
+    xpub_client_id: some-id
+    xpub_client_secret: ThisIsASecret
+
     subject_rewrites: []
 
     cache_control: private, no-cache, no-store, must-revalidate
 
     feature_digest_channel: true
+    feature_xpub: false
