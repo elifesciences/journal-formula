@@ -45,5 +45,4 @@ parameters:
 
     cache_control: private, no-cache, no-store, must-revalidate
 
-    feature_digest_channel: true
     feature_xpub: false

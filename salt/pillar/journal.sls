@@ -54,7 +54,6 @@ journal:
 
     subject_rewrites: []
 
-    feature_digest_channel: true
     feature_xpub: false
 
 api_dummy:
