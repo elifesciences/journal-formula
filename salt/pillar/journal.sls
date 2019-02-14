@@ -52,6 +52,9 @@ journal:
 
     cache_control: private, no-cache, no-store, must-revalidate
 
+    rds_articles:
+        16846: https://repro.elifesciences.org/example.html
+
     subject_rewrites: []
 
     feature_xpub: false
