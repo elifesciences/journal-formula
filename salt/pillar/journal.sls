@@ -1,7 +1,7 @@
 journal:
     api_url: https://prod--cdn-gateway.elifesciences.org/
     api_url_public: '%api_url%'
-    api_key: key_for_authorizing_api_requests
+    api_key: public
     side_by_side_view_url: https://lens.elifesciences.org/
     observer_url: https://observer.elifesciences.org/
     default_host: null
@@ -53,7 +53,7 @@ journal:
     cache_control: private, no-cache, no-store, must-revalidate
 
     rds_articles:
-        16846: https://repro.elifesciences.org/example.html
+        '16846': https://repro.elifesciences.org/example.html
 
     subject_rewrites: []
 
