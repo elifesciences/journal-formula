@@ -45,4 +45,6 @@ parameters:
 
     cache_control: private, no-cache, no-store, must-revalidate
 
+    rds_articles: {}
+
     feature_xpub: false
