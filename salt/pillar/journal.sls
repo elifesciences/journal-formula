@@ -59,6 +59,8 @@ journal:
 
     feature_xpub: false
 
+    calls_to_action: []
+
 api_dummy:
     standalone: False
     pinned_revision_file: /srv/journal/api-dummy.sha1
