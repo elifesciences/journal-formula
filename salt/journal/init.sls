@@ -1,3 +1,5 @@
+{% set osrelease = salt['grains.get']('osrelease') %}
+
 maintenance-mode-start:
     cmd.run:
         - name: |
@@ -6,6 +8,20 @@ maintenance-mode-start:
         - require:
             - nginx-server-service
 
+{% if osrelease not in ["14.04", "16.04"] %}
+
+journal-php-extensions:
+    pkg.installed:
+        - pkgs:
+            - php-redis
+            - php7.2-curl
+        - require:
+            - php
+        - watch_in:
+            - service: php-fpm
+
+{% else %}
+
 journal-php-extensions:
     cmd.run:
         - name: apt-get install -y php7.0-redis
@@ -13,6 +29,8 @@ journal-php-extensions:
             - php
         - watch_in:
             - service: php-fpm
+
+{% endif %}
 
 journal-repository:
     builder.git_latest:
