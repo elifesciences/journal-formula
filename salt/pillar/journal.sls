@@ -21,7 +21,7 @@ journal:
     redis_sessions: redis://redis
 
     mailer:
-        # TODO: review production value
+        # absolute hostname in real environments, reachable from any container
         host: localhost
         port: 25
         username: anonymous
