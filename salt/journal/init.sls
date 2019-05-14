@@ -18,7 +18,6 @@ journal-repository:
         - force_reset: True
         - fetch_pull_requests: True
         - require:
-            - cmd: composer
             - maintenance-mode-start
 
     file.directory:
@@ -78,7 +77,6 @@ journal-cache-warmup:
         - env:
             - APP_ENV: {{ pillar.elife.env }}
         - require:
-            - composer-install
             - journal-cache-clean
 
 journal-nginx-redirect-existing-paths:
@@ -145,7 +143,6 @@ syslog-ng-for-journal-logs:
         - template: jinja
         - require:
             - pkg: syslog-ng
-            - composer-install
         - listen_in:
             - service: syslog-ng
 
