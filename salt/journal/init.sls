@@ -124,16 +124,6 @@ journal-cache-warmup:
             - composer-install
             - journal-cache-clean
 
-journal-assets-install:
-    cmd.run:
-        - name: bin/console assets:install --symlink
-        - cwd: /srv/journal/
-        - user: {{ pillar.elife.deploy_user.username }}
-        - env:
-            - APP_ENV: {{ pillar.elife.env }}
-        - require:
-            - journal-cache-warmup
-
 journal-nginx-redirect-existing-paths:
     file.managed:
         - name: /etc/nginx/traits.d/redirect-existing-paths.conf
