@@ -6,14 +6,6 @@ maintenance-mode-start:
         - require:
             - nginx-server-service
 
-journal-php-extensions:
-    cmd.run:
-        - name: apt-get install -y php7.0-redis
-        - require:
-            - php
-        - watch_in:
-            - service: php-fpm
-
 journal-repository:
     builder.git_latest:
         - name: git@github.com:elifesciences/journal.git
@@ -113,7 +105,6 @@ composer-install:
             - COMPOSER_DISCARD_CHANGES: 'true'
         - require:
             - file: config-file
-            - journal-php-extensions
 
 journal-cache-clean:
     cmd.run:
@@ -233,37 +224,3 @@ logrotate-for-journal-logs:
     file.managed:
         - name: /etc/logrotate.d/journal
         - source: salt://journal/config/etc-logrotate.d-journal
-
-{% if pillar.elife.env in ['ci', 'dev'] %}
-journal-behat:
-    file.managed:
-        - name: /srv/journal/behat.yml
-        - source: salt://journal/config/srv-journal-behat.yml
-        - template: jinja
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - file: journal-repository
-
-# for patterns-php and other private projects access
-# in particular, building them for the dependencies-journal-update-patterns-php pipeline
-add-private-key-to-elife-user:
-    file.managed:
-        - user: elife
-        - name: /home/{{ pillar.elife.deploy_user.username }}/.ssh/id_rsa
-        - source: salt://journal/config/home-deploy-user-.ssh-id_rsa
-        - mode: 400
-        - require_in:
-            - cmd: composer-install
-
-add-public-key-to-elife-user:
-    file.managed:
-        - user: elife
-        - name: /home/{{ pillar.elife.deploy_user.username }}/.ssh/id_rsa.pub
-        - source: salt://journal/config/home-deploy-user-.ssh-id_rsa.pub
-        - mode: 444
-        - require_in:
-            - cmd: composer-install
-        
-{% endif %}
-
