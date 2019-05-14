@@ -17,10 +17,11 @@ journal:
 
     web_users: {}
 
-    redis_cache: redis://localhost
-    redis_sessions: redis://localhost
+    redis_cache: redis://redis
+    redis_sessions: redis://redis
 
     mailer:
+        # TODO: review production value
         host: localhost
         port: 25
         username: anonymous

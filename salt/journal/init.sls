@@ -6,20 +6,7 @@ maintenance-mode-start:
         - require:
             - nginx-server-service
 
-journal-repository:
-    builder.git_latest:
-        - name: git@github.com:elifesciences/journal.git
-        - identity: {{ pillar.elife.projects_builder.key or '' }}
-        - rev: {{ salt['elife.rev']() }}
-        - branch: {{ salt['elife.branch']() }}
-        - target: /srv/journal/
-        - force_fetch: True
-        - force_checkout: True
-        - force_reset: True
-        - fetch_pull_requests: True
-        - require:
-            - maintenance-mode-start
-
+journal-folder:
     file.directory:
         - name: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
@@ -27,18 +14,43 @@ journal-repository:
         - recurse:
             - user
             - group
+
+journal-folder-old-git-repository:
+    file.absent:
+        - name: /srv/journal/.git
         - require:
-            - builder: journal-repository
+            - journal-folder
+
+journal-docker-compose-env:
+    file.managed:
+        - name: /srv/journal/.env
+        - source: salt://journal/config/srv-journal-.env
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-folder
+
+journal-docker-compose-containers-env:
+    file.managed:
+        - name: /srv/journal/containers.env
+        - source: salt://journal/config/srv-journal-containers.env
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-folder
 
 config-file:
     file.managed:
-        - name: /srv/journal/app/config/parameters.yml
+        - name: /srv/journal/parameters.yml
+        # TODO: rename
         - source: salt://journal/config/srv-journal-app-config-parameters.yml
         - template: jinja
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
         - require:
-            - file: journal-repository
+            - journal-folder
 
 # files and directories must be readable and writable by both elife and www-data
 # they are both in the www-data group, but the g+s flag makes sure that
@@ -55,29 +67,48 @@ var-directory:
             - group
             - mode
         - require:
-            - builder: journal-repository
+            - journal-folder
 
     cmd.run:
         - name: chmod -R g+s /srv/journal/var
         - require:
             - file: var-directory
 
-journal-cache-clean:
+# deprecated, remove when no longer necessary
+stop-existing-php-fpm:
     cmd.run:
-        - name: rm -rf var/cache/
-        - cwd: /srv/journal/
+        - name: stop php7.0-fpm || true
+        # if not stopped, may conflict with port 9000 forwarded from the host to the container
+        - require_in:
+            - cmd: journal-docker-compose
+
+journal-docker-compose:
+    file.managed:
+        - name: /srv/journal/docker-compose.yml
+        - source: salt://journal/config/srv-journal-docker-compose.yml
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
         - require:
-            - var-directory
+            - journal-docker-compose-env
+            - journal-docker-compose-containers-env
+
+    cmd.run:
+        - name: |
+            rm -f docker-compose.override.yml
+            docker-compose up -d --force-recreate
+        - cwd: /srv/journal
+        - user: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - file: journal-docker-compose
 
 journal-cache-warmup:
     cmd.run:
-        - name: bin/console cache:warmup
+        - name: docker-compose exec fpm bin/console cache:warmup
         - cwd: /srv/journal/
-        - user: {{ pillar.elife.webserver.username }}
-        - env:
-            - APP_ENV: {{ pillar.elife.env }}
+        - user: {{ pillar.elife.deploy_user.username }}
         - require:
-            - journal-cache-clean
+            - journal-docker-compose
 
 journal-nginx-redirect-existing-paths:
     file.managed:
