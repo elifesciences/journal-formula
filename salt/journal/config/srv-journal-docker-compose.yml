@@ -18,8 +18,7 @@ services:
         depends_on:
             - redis
     assets:
-    #    image: "elifesciences/journal_web:${IMAGE_TAG}"
-        image: "elifesciences/journal_web:f6251881324cf4a43190b2f84cd3dc32b51f4978"
+        image: "elifesciences/journal_web:${IMAGE_TAG}"
         volumes:
             - ./nginx-assets.conf:/etc/nginx/conf.d/default.conf
         ports:
