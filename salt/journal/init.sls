@@ -52,6 +52,16 @@ config-file:
         - require:
             - journal-folder
 
+assets-nginx-configuration:
+    file.managed:
+        - name: /srv/journal/nginx-assets.conf
+        - source: salt://journal/config/srv-journal-nginx-assets.conf
+        - template: jinja
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-folder
+
 # files and directories must be readable and writable by both elife and www-data
 # they are both in the www-data group, but the g+s flag makes sure that
 # new files and directories created inside have the www-data group
