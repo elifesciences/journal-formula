@@ -1,6 +1,7 @@
 base:
     '*':
         - elife
+        - elife.docker
         - elife.nginx
         - elife.nginx-error-pages
         - journal
