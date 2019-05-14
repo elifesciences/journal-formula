@@ -165,23 +165,6 @@ journal-nginx-vhost:
             - journal-nginx-redirect-existing-paths
             - journal-nginx-robots
 
-running-gulp:
-    {% if pillar.elife.env in ['end2end', 'prod'] %}
-    # using Elasticache so no local Redis is present
-    cmd.run:
-        - name: retry node_modules/.bin/gulp 3
-    {% else %}
-    cmd.script:
-        - name: retrying-gulp
-        - source: salt://journal/scripts/retrying-gulp-without-redis.sh
-    {% endif %}
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - journal-npm-install
-            - journal-node-modules-manual-install
-            - composer-install
-
 maintenance-mode-end:
     cmd.run:
         - name: |
@@ -189,7 +172,6 @@ maintenance-mode-end:
             /etc/init.d/nginx reload
         - require:
             - journal-nginx-vhost
-            - running-gulp
 
 maintenance-mode-check-nginx-stays-up:
     cmd.run:
