@@ -106,6 +106,7 @@ journal-docker-compose:
     cmd.run:
         - name: |
             rm -f docker-compose.override.yml
+            docker-compose pull
             docker-compose up -d --force-recreate
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
