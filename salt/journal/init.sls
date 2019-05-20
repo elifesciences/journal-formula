@@ -105,9 +105,10 @@ journal-docker-compose:
 
     cmd.run:
         - name: |
+            set -e
             rm -f docker-compose.override.yml
-            docker-compose pull
-            docker-compose up -d --force-recreate
+            docker-compose --no-ansi pull
+            docker-compose --no-ansi up --detach --force-recreate
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
@@ -115,7 +116,7 @@ journal-docker-compose:
 
 journal-cache-warmup:
     cmd.run:
-        - name: docker-compose exec fpm bin/console cache:warmup
+        - name: docker-compose --no-ansi exec fpm bin/console cache:warmup
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
@@ -155,6 +156,7 @@ journal-nginx-vhost:
 maintenance-mode-end:
     cmd.run:
         - name: |
+            set -e
             ln -s /etc/nginx/sites-available/journal.conf /etc/nginx/sites-enabled/journal.conf
             /etc/init.d/nginx reload
         - require:
