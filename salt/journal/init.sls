@@ -116,7 +116,7 @@ journal-docker-compose:
 
 journal-cache-warmup:
     cmd.run:
-        - name: docker-compose --no-ansi exec fpm bin/console cache:warmup
+        - name: docker-compose exec fpm bin/console cache:warmup
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
