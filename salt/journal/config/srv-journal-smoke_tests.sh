@@ -2,7 +2,8 @@
 . /opt/smoke.sh/smoke.sh
 set -e
 
-# insert docker-wait-healthy journal_fpm_1 and similar
+# TODO: insert docker-wait-healthy journal_fpm_1 and similar
+# https://github.com/elifesciences/journal/pull/1156
 
 hostname="${1:-$(hostname)}"
 port="${2:-80}"
