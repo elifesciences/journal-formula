@@ -45,7 +45,7 @@ config-file:
     file.managed:
         - name: /srv/journal/parameters.yml
         # TODO: rename
-        - source: salt://journal/config/srv-journal-app-config-parameters.yml
+        - source: salt://journal/config/srv-journal-parameters.yml
         - template: jinja
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
