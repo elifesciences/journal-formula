@@ -41,6 +41,16 @@ journal-docker-compose-containers-env:
         - require:
             - journal-folder
 
+journal-dockerfile-web:
+    file.managed:
+        - name: /srv/journal/Dockerfile.web
+        - source: salt://journal/config/srv-journal-Dockerfile.web
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-folder
+
 config-file:
     file.managed:
         - name: /srv/journal/parameters.yml
@@ -102,12 +112,14 @@ journal-docker-compose:
         - require:
             - journal-docker-compose-env
             - journal-docker-compose-containers-env
+            - journal-dockerfile-web
 
     cmd.run:
         - name: |
             set -e
             rm -f docker-compose.override.yml
             docker-compose --no-ansi pull
+            docker-compose --no-ansi build
             docker-compose --no-ansi up --detach --force-recreate
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
