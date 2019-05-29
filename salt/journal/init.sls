@@ -168,6 +168,14 @@ maintenance-mode-check-nginx-stays-up:
         - require:
             - maintenance-mode-end
 
+status-test:
+    file.managed:
+        - name: /srv/journal/status_test.sh
+        - source: salt://journal/config/srv-journal-status_test.sh
+        - mode: 755
+        - require:
+            - journal-folder
+
 smoke-tests:
     file.managed:
         - name: /srv/journal/smoke_tests.sh
@@ -175,6 +183,7 @@ smoke-tests:
         - mode: 755
         - require:
             - journal-folder
+            - status-test
 
 {% for title, user in pillar.journal.web_users.items() %}
 journal-nginx-authentication-{{ title }}:
