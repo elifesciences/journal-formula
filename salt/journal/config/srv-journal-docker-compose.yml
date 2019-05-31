@@ -1,8 +1,10 @@
 version: '3'
 
 services:
+    {% if pillar.journal.get('redis_cache') == false %}
     redis:
         image: redis:3.2.10-alpine
+    {% endif %}
     fpm:
         image: "elifesciences/journal:${IMAGE_TAG}"
         volumes:
@@ -15,8 +17,10 @@ services:
         restart: always
         volumes:
             - ./parameters.yml:/srv/journal/app/config/parameters.yml
+        {% if pillar.journal.get('redis_cache') == false %}
         depends_on:
             - redis
+        {% endif %}
     assets:
         build:
             context: .
