@@ -118,7 +118,7 @@ journal-docker-compose:
         - name: |
             set -e
             rm -f docker-compose.override.yml
-            docker-compose --no-ansi pull
+            docker-compose --no-ansi pull fpm
             docker-compose --no-ansi build
             docker-compose --no-ansi up --detach --force-recreate
         - cwd: /srv/journal
