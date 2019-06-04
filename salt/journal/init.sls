@@ -2,6 +2,8 @@ maintenance-mode-start:
     cmd.run:
         - name: |
             rm -f /etc/nginx/sites-enabled/journal.conf
+            rm -f /etc/nginx/sites-enabled/api-dummy.conf
+            rm -f /etc/nginx/sites-enabled/journal-local-demo.conf
             /etc/init.d/nginx reload
         - require:
             - nginx-server-service
@@ -101,8 +103,6 @@ stop-existing-services:
             set -e
             # if not stopped, may conflict with port 9000 forwarded from the host to the container
             stop php7.0-fpm || true
-            rm -f /etc/nginx/sites-enabled/api-dummy.conf
-            rm -f /etc/nginx/sites-enabled/journal-local-demo.conf
         - require_in:
             - cmd: journal-docker-compose
 
