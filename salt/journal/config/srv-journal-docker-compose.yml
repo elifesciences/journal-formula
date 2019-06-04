@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+    {% if pillar.journal.get('redis_cache') == false %}
+    redis:
+        image: redis:3.2.10-alpine
+    {% endif %}
+    fpm:
+        image: "elifesciences/journal:${IMAGE_TAG}"
+        volumes:
+            - ./parameters.yml:/srv/journal/app/config/parameters.yml
+            - ./var/logs:/srv/journal/var/logs
+        ports:
+            - "9000:9000"
+        env_file:
+            - ./containers.env
+        restart: always
+        volumes:
+            - ./parameters.yml:/srv/journal/app/config/parameters.yml
+        {% if pillar.journal.get('redis_cache') == false %}
+        depends_on:
+            - redis
+        {% endif %}
+    assets:
+        build:
+            context: .
+            dockerfile: Dockerfile.web
+            args:
+                image_tag: ${IMAGE_TAG}
+        image: "elifesciences/journal_web:${IMAGE_TAG}"
+        volumes:
+            - ./nginx-assets.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8080:8080"
+

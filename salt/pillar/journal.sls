@@ -17,10 +17,11 @@ journal:
 
     web_users: {}
 
-    redis_cache: redis://localhost
-    redis_sessions: redis://localhost
+    redis_cache: redis://redis
+    redis_sessions: redis://redis
 
     mailer:
+        # absolute hostname in real environments, reachable from any container
         host: localhost
         port: 25
         username: anonymous

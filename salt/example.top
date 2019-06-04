@@ -1,14 +1,7 @@
 base:
     '*':
         - elife
-        - elife.php7
-        - elife.composer
+        - elife.docker
         - elife.nginx
-        - elife.nginx-php7
         - elife.nginx-error-pages
-        - elife.nodejs6
-        - elife.redis-server
-        - journal.curl-7-36
         - journal
-        - api-dummy
-        - journal.local-demo

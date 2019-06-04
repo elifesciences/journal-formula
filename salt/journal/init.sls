@@ -6,29 +6,7 @@ maintenance-mode-start:
         - require:
             - nginx-server-service
 
-journal-php-extensions:
-    cmd.run:
-        - name: apt-get install -y php7.0-redis
-        - require:
-            - php
-        - watch_in:
-            - service: php-fpm
-
-journal-repository:
-    builder.git_latest:
-        - name: git@github.com:elifesciences/journal.git
-        - identity: {{ pillar.elife.projects_builder.key or '' }}
-        - rev: {{ salt['elife.rev']() }}
-        - branch: {{ salt['elife.branch']() }}
-        - target: /srv/journal/
-        - force_fetch: True
-        - force_checkout: True
-        - force_reset: True
-        - fetch_pull_requests: True
-        - require:
-            - cmd: composer
-            - maintenance-mode-start
-
+journal-folder:
     file.directory:
         - name: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
@@ -36,18 +14,63 @@ journal-repository:
         - recurse:
             - user
             - group
+
+journal-folder-old-git-repository:
+    file.absent:
+        - name: /srv/journal/.git
         - require:
-            - builder: journal-repository
+            - journal-folder
+
+journal-docker-compose-env:
+    file.managed:
+        - name: /srv/journal/.env
+        - source: salt://journal/config/srv-journal-.env
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-folder
+
+journal-docker-compose-containers-env:
+    file.managed:
+        - name: /srv/journal/containers.env
+        - source: salt://journal/config/srv-journal-containers.env
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-folder
+
+journal-dockerfile-web:
+    file.managed:
+        - name: /srv/journal/Dockerfile.web
+        - source: salt://journal/config/srv-journal-Dockerfile.web
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-folder
 
 config-file:
     file.managed:
-        - name: /srv/journal/app/config/parameters.yml
-        - source: salt://journal/config/srv-journal-app-config-parameters.yml
+        - name: /srv/journal/parameters.yml
+        # TODO: rename
+        - source: salt://journal/config/srv-journal-parameters.yml
         - template: jinja
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
         - require:
-            - file: journal-repository
+            - journal-folder
+
+assets-nginx-configuration:
+    file.managed:
+        - name: /srv/journal/nginx-assets.conf
+        - source: salt://journal/config/srv-journal-nginx-assets.conf
+        - template: jinja
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - require:
+            - journal-folder
 
 # files and directories must be readable and writable by both elife and www-data
 # they are both in the www-data group, but the g+s flag makes sure that
@@ -64,84 +87,52 @@ var-directory:
             - group
             - mode
         - require:
-            - builder: journal-repository
+            - journal-folder
 
     cmd.run:
         - name: chmod -R g+s /srv/journal/var
         - require:
             - file: var-directory
 
-npm-build-dependencies:
-    pkg.installed:
-        - pkgs:
-            - make
-            - g++
-            - libjpeg-turbo-progs
-            - optipng
-
-journal-npm-install:
+# deprecated, remove when no longer necessary
+stop-existing-php-fpm:
     cmd.run:
-        - name: npm install
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - journal-repository
-            - npm-build-dependencies
+        - name: stop php7.0-fpm || true
+        # if not stopped, may conflict with port 9000 forwarded from the host to the container
+        - require_in:
+            - cmd: journal-docker-compose
 
-journal-node-modules-manual-install:
+journal-docker-compose:
+    file.managed:
+        - name: /srv/journal/docker-compose.yml
+        - source: salt://journal/config/srv-journal-docker-compose.yml
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-docker-compose-env
+            - journal-docker-compose-containers-env
+            - journal-dockerfile-web
+
     cmd.run:
         - name: |
-            node node_modules/mozjpeg/lib/install.js
-            node node_modules/optipng-bin/lib/install.js
+            set -e
+            rm -f docker-compose.override.yml
+            docker-compose --no-ansi pull
+            docker-compose --no-ansi build
+            docker-compose --no-ansi up --detach --force-recreate
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
-            - journal-npm-install
-
-composer-install:
-    cmd.run:
-        {% if pillar.elife.env in ['prod', 'demo', 'end2end', 'continuumtest', 'preview', 'continuumtestpreview'] %}
-        - name: composer --no-interaction install --no-suggest --classmap-authoritative --no-dev
-        {% elif pillar.elife.env != 'dev' %}
-        - name: composer --no-interaction install --no-suggest --classmap-authoritative
-        {% else %}
-        - name: composer --no-interaction install --no-suggest
-        {% endif %}
-        - cwd: /srv/journal/
-        - user: {{ pillar.elife.deploy_user.username }}
-        - env:
-            - COMPOSER_DISCARD_CHANGES: 'true'
-        - require:
-            - file: config-file
-            - journal-php-extensions
-
-journal-cache-clean:
-    cmd.run:
-        - name: rm -rf var/cache/
-        - cwd: /srv/journal/
-        - require:
-            - var-directory
+            - file: journal-docker-compose
 
 journal-cache-warmup:
     cmd.run:
-        - name: bin/console cache:warmup
-        - cwd: /srv/journal/
-        - user: {{ pillar.elife.webserver.username }}
-        - env:
-            - APP_ENV: {{ pillar.elife.env }}
-        - require:
-            - composer-install
-            - journal-cache-clean
-
-journal-assets-install:
-    cmd.run:
-        - name: bin/console assets:install --symlink
+        - name: docker-compose exec -T fpm bin/console cache:warmup
         - cwd: /srv/journal/
         - user: {{ pillar.elife.deploy_user.username }}
-        - env:
-            - APP_ENV: {{ pillar.elife.env }}
         - require:
-            - journal-cache-warmup
+            - journal-docker-compose
 
 journal-nginx-redirect-existing-paths:
     file.managed:
@@ -174,37 +165,37 @@ journal-nginx-vhost:
             - journal-nginx-redirect-existing-paths
             - journal-nginx-robots
 
-running-gulp:
-    {% if pillar.elife.env in ['end2end', 'prod'] %}
-    # using Elasticache so no local Redis is present
-    cmd.run:
-        - name: retry node_modules/.bin/gulp 3
-    {% else %}
-    cmd.script:
-        - name: retrying-gulp
-        - source: salt://journal/scripts/retrying-gulp-without-redis.sh
-    {% endif %}
-        - cwd: /srv/journal
-        - user: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - journal-npm-install
-            - journal-node-modules-manual-install
-            - composer-install
-
 maintenance-mode-end:
     cmd.run:
         - name: |
+            set -e
             ln -s /etc/nginx/sites-available/journal.conf /etc/nginx/sites-enabled/journal.conf
             /etc/init.d/nginx reload
         - require:
             - journal-nginx-vhost
-            - running-gulp
 
 maintenance-mode-check-nginx-stays-up:
     cmd.run:
         - name: sleep 2 && /etc/init.d/nginx status
         - require:
             - maintenance-mode-end
+
+status-test:
+    file.managed:
+        - name: /srv/journal/status_test.sh
+        - source: salt://journal/config/srv-journal-status_test.sh
+        - mode: 755
+        - require:
+            - journal-folder
+
+smoke-tests:
+    file.managed:
+        - name: /srv/journal/smoke_tests.sh
+        - source: salt://journal/config/srv-journal-smoke_tests.sh
+        - mode: 755
+        - require:
+            - journal-folder
+            - status-test
 
 {% for title, user in pillar.journal.web_users.items() %}
 journal-nginx-authentication-{{ title }}:
@@ -225,7 +216,6 @@ syslog-ng-for-journal-logs:
         - template: jinja
         - require:
             - pkg: syslog-ng
-            - composer-install
         - listen_in:
             - service: syslog-ng
 
@@ -233,37 +223,3 @@ logrotate-for-journal-logs:
     file.managed:
         - name: /etc/logrotate.d/journal
         - source: salt://journal/config/etc-logrotate.d-journal
-
-{% if pillar.elife.env in ['ci', 'dev'] %}
-journal-behat:
-    file.managed:
-        - name: /srv/journal/behat.yml
-        - source: salt://journal/config/srv-journal-behat.yml
-        - template: jinja
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-        - require:
-            - file: journal-repository
-
-# for patterns-php and other private projects access
-# in particular, building them for the dependencies-journal-update-patterns-php pipeline
-add-private-key-to-elife-user:
-    file.managed:
-        - user: elife
-        - name: /home/{{ pillar.elife.deploy_user.username }}/.ssh/id_rsa
-        - source: salt://journal/config/home-deploy-user-.ssh-id_rsa
-        - mode: 400
-        - require_in:
-            - cmd: composer-install
-
-add-public-key-to-elife-user:
-    file.managed:
-        - user: elife
-        - name: /home/{{ pillar.elife.deploy_user.username }}/.ssh/id_rsa.pub
-        - source: salt://journal/config/home-deploy-user-.ssh-id_rsa.pub
-        - mode: 444
-        - require_in:
-            - cmd: composer-install
-        
-{% endif %}
-

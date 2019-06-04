@@ -1,1 +1,1 @@
-elifeFormulaParallel('journal', '/srv/journal')
+elifeFormula('journal', '/srv/journal', null, ['s1804'])
