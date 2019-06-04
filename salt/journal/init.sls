@@ -95,10 +95,15 @@ var-directory:
             - file: var-directory
 
 # deprecated, remove when no longer necessary
-stop-existing-php-fpm:
+stop-existing-services:
     cmd.run:
-        - name: stop php7.0-fpm || true
-        # if not stopped, may conflict with port 9000 forwarded from the host to the container
+        - name: 
+            set -e
+            # if not stopped, may conflict with port 9000 forwarded from the host to the container
+            stop php7.0-fpm || true
+            rm -f /etc/nginx/sites-enabled/api-dummy.conf
+            rm -f /etc/nginx/sites-enabled/journal-local-demo.conf
+
         - require_in:
             - cmd: journal-docker-compose
 
