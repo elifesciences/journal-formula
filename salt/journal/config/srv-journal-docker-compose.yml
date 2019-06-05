@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    {% if pillar.journal.get('redis_cache') == false %}
+    {% if not pillar.journal.get('redis_cache') %}
     redis:
         image: redis:3.2.10-alpine
     {% endif %}
