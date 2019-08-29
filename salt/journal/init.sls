@@ -95,7 +95,7 @@ logs-directory:
     cmd.run:
         - name: chmod -R g+s /srv/journal/var
         - require:
-            - file: var-directory
+            - file: logs-directory
 
 # deprecated, remove when no longer necessary
 stop-existing-services:
