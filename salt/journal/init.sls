@@ -97,16 +97,6 @@ logs-directory:
         - require:
             - file: logs-directory
 
-# deprecated, remove when no longer necessary
-stop-existing-services:
-    cmd.run:
-        - name: |
-            set -e
-            # if not stopped, may conflict with port 9000 forwarded from the host to the container
-            stop php7.0-fpm || true
-        - require_in:
-            - cmd: journal-docker-compose
-
 journal-docker-compose:
     file.managed:
         - name: /srv/journal/docker-compose.yml
