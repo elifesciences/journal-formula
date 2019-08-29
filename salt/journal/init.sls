@@ -74,16 +74,15 @@ assets-nginx-configuration:
         - require:
             - journal-folder
 
-# files and directories must be readable and writable by both elife and www-data
-# they are both in the www-data group, but the g+s flag makes sure that
-# new files and directories created inside have the www-data group
+# files and directories must be writable by www-data,
+# the user the container is running as
 logs-directory:
     file.directory:
         - name: /srv/journal/var/logs
         - user: {{ pillar.elife.webserver.username }}
         - group: {{ pillar.elife.webserver.username }}
         - dir_mode: 775
-        - file_mode: 660
+        - file_mode: 664
         - makedirs: true
         - recurse:
             - user
@@ -92,8 +91,9 @@ logs-directory:
         - require:
             - journal-folder
 
+    # deprecated, remove when no longer necessary
     cmd.run:
-        - name: chmod -R g+s /srv/journal/var
+        - name: chmod -R g-s /srv/journal/var
         - require:
             - file: logs-directory
 
