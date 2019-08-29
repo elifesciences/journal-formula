@@ -17,12 +17,6 @@ journal-folder:
             - user
             - group
 
-journal-folder-old-git-repository:
-    file.absent:
-        - name: /srv/journal/.git
-        - require:
-            - journal-folder
-
 journal-docker-compose-env:
     file.managed:
         - name: /srv/journal/.env
