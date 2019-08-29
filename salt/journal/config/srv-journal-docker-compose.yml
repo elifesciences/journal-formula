@@ -26,7 +26,6 @@ services:
             dockerfile: Dockerfile.web
             args:
                 image_tag: ${IMAGE_TAG}
-        image: "elifesciences/journal_web:${IMAGE_TAG}"
         restart: always
         volumes:
             - ./nginx-assets.conf:/etc/nginx/conf.d/default.conf
