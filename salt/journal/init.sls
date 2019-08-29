@@ -106,7 +106,6 @@ journal-docker-compose:
     cmd.run:
         - name: |
             set -e
-            rm -f docker-compose.override.yml
             docker-compose --no-ansi pull fpm
             docker-compose --no-ansi build
             docker-compose --no-ansi up --detach --force-recreate
