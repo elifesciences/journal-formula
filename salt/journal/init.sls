@@ -17,12 +17,6 @@ journal-folder:
             - user
             - group
 
-journal-folder-old-git-repository:
-    file.absent:
-        - name: /srv/journal/.git
-        - require:
-            - journal-folder
-
 journal-docker-compose-env:
     file.managed:
         - name: /srv/journal/.env
@@ -74,16 +68,16 @@ assets-nginx-configuration:
         - require:
             - journal-folder
 
-# files and directories must be readable and writable by both elife and www-data
-# they are both in the www-data group, but the g+s flag makes sure that
-# new files and directories created inside have the www-data group
-var-directory:
+# files and directories must be writable by www-data,
+# the user the container is running as
+logs-directory:
     file.directory:
-        - name: /srv/journal/var
+        - name: /srv/journal/var/logs
         - user: {{ pillar.elife.webserver.username }}
         - group: {{ pillar.elife.webserver.username }}
         - dir_mode: 775
-        - file_mode: 660
+        - file_mode: 664
+        - makedirs: true
         - recurse:
             - user
             - group
@@ -91,20 +85,11 @@ var-directory:
         - require:
             - journal-folder
 
+    # deprecated, remove when no longer necessary
     cmd.run:
-        - name: chmod -R g+s /srv/journal/var
+        - name: chmod -R g-s /srv/journal/var
         - require:
-            - file: var-directory
-
-# deprecated, remove when no longer necessary
-stop-existing-services:
-    cmd.run:
-        - name: |
-            set -e
-            # if not stopped, may conflict with port 9000 forwarded from the host to the container
-            stop php7.0-fpm || true
-        - require_in:
-            - cmd: journal-docker-compose
+            - file: logs-directory
 
 journal-docker-compose:
     file.managed:
@@ -121,7 +106,6 @@ journal-docker-compose:
     cmd.run:
         - name: |
             set -e
-            rm -f docker-compose.override.yml
             docker-compose --no-ansi pull fpm
             docker-compose --no-ansi build
             docker-compose --no-ansi up --detach --force-recreate
