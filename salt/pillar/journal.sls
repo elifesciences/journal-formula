@@ -68,6 +68,9 @@ journal:
 
     cache_control: private, no-cache, no-store, must-revalidate
 
+    example_rds_articles:
+        '16846': https://repro.elifesciences.org/example.html
+    # deprecated, remove to make room for https://github.com/elifesciences/journal/pull/1220
     rds_articles:
         '16846': https://repro.elifesciences.org/example.html
     dismissible_info_bars:
