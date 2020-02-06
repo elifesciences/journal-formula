@@ -69,7 +69,9 @@ journal:
     cache_control: private, no-cache, no-store, must-revalidate
 
     feature_rds: true
-    rds_articles: {}
+    # 16846 is in api-dummy
+    rds_articles:
+        '16846': https://hub.stenci.la/elife/30274/main/
     example_rds_articles:
         '16846': https://repro.elifesciences.org/example.html
     dismissible_info_bars:
