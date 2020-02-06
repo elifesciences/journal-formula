@@ -71,7 +71,8 @@ journal:
     feature_rds: true
     # 16846 is in api-dummy
     rds_articles:
-        '16846': https://hub.stenci.la/elife/30274/main/
+        '16846':
+            display: https://hub.stenci.la/elife/30274/main/
     example_rds_articles:
         '16846': https://repro.elifesciences.org/example.html
     dismissible_info_bars:
