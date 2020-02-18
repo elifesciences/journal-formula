@@ -21,7 +21,6 @@ parameters:
     {{ name }}:
         {{ pillar.journal.get(name)|yaml(False)|indent(8) }}
     {% endfor %}
-    rds_articles_manually_rendered: {{ pillar.journal.rds_articles|yaml(False) }}
 
     dismissible_info_bars: {{ pillar.journal.dismissible_info_bars }}
 
