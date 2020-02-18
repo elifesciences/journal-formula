@@ -1,1 +1,1 @@
-elifeFormula('journal', '/srv/journal', null, ['s1804'])
+elifeFormula('journal', '/srv/journal', null, ['s1804', 'standalone-next-salt'])
