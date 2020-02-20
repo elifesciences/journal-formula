@@ -19,7 +19,7 @@ parameters:
 
     {% for name in standard_keys %}
     {{ name }}:
-        {{ pillar.journal.get(name)|yaml(False)|indent(8) }}
+        {{ pillar.journal.get(name)|json }}
     {% endfor %}
 
     dismissible_info_bars: {{ pillar.journal.dismissible_info_bars }}
