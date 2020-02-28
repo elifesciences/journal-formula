@@ -1,1 +1,1 @@
-elifeFormula('journal', '/srv/journal', null, ['s1804', 'sNextSalt'])
+elifeFormula('journal', '/srv/journal', null, ['s1804', 'snsalt'])
