@@ -63,8 +63,8 @@ journal:
     hypothesis_client_id: some-id
     hypothesis_client_secret: ThisIsASecret
 
-    xpub_client_id: some-id
-    xpub_client_secret: ThisIsASecret
+    submission_client_id: some-id
+    submission_client_secret: ThisIsASecret
 
     cache_control: private, no-cache, no-store, must-revalidate
 
@@ -80,8 +80,6 @@ journal:
                 - '26231'
 
     subject_rewrites: []
-
-    feature_xpub: false
 
     calls_to_action: []
 
