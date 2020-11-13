@@ -68,12 +68,10 @@ journal:
 
     cache_control: private, no-cache, no-store, must-revalidate
 
-    feature_rds: true
-    {% import_yaml "rds-articles.yaml" as rds_articles %}
-    rds_articles: {{ rds_articles|yaml }}
+    {% import_yaml "era-articles.yaml" as era_articles %}
+    era_articles: {{ era_articles|yaml }}
+    rds_articles: {{ era_articles|yaml }}
 
-    example_rds_articles:
-        '16846': https://repro.elifesciences.org/example.html
     dismissible_info_bars:
         aging:
             id: aging-special-issue
