@@ -2,5 +2,5 @@ ARG image_tag=latest
 FROM elifesciences/journal:${image_tag} AS app
 FROM nginx:1.13.12-alpine
 
-COPY --from=app /srv/journal/web/ /srv/journal/web/
 COPY /srv/journal/sitemap/ /srv/journal/sitemap/
+COPY --from=app /srv/journal/web/ /srv/journal/web/
