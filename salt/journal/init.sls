@@ -47,6 +47,16 @@ journal-dockerfile-web:
         - require:
             - journal-folder
 
+journal-dockerfile-sitemap:
+    file.managed:
+        - name: /srv/journal/sitemap.xml
+        - source: salt://journal/config/srv-journal-sitemap.xml
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - template: jinja
+        - require:
+            - journal-folder
+
 config-file:
     file.managed:
         - name: /srv/journal/parameters.yml
@@ -102,6 +112,7 @@ journal-docker-compose:
             - journal-docker-compose-env
             - journal-docker-compose-containers-env
             - journal-dockerfile-web
+            - journal-dockerfile-sitemap
 
     cmd.run:
         - name: |
@@ -136,6 +147,16 @@ journal-nginx-robots:
     file.managed:
         - name: /etc/nginx/traits.d/robots.conf
         - source: salt://journal/config/etc-nginx-traits.d-robots.conf
+        - template: jinja
+        - require:
+            - nginx-config
+        - listen_in:
+            - service: nginx-server-service
+
+journal-nginx-sitemap:
+    file.managed:
+        - name: /etc/nginx/traits.d/sitemap.conf
+        - source: salt://journal/config/etc-nginx-traits.d-sitemap.conf
         - template: jinja
         - require:
             - nginx-config
