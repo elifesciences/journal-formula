@@ -47,15 +47,26 @@ journal-dockerfile-web:
         - require:
             - journal-folder
 
+journal-dockerfile-sitemap-folder:
+    file.directory:
+        - name: /srv/journal/sitemap
+        - user: {{ pillar.elife.deploy_user.username }}
+        - group: {{ pillar.elife.deploy_user.username }}
+        - recurse:
+            - user
+            - group
+        - require:
+            - journal-folder
+
 journal-dockerfile-sitemap:
     file.managed:
-        - name: /srv/journal/sitemap.xml
+        - name: /srv/journal/sitemap/sitemap.xml
         - source: salt://journal/config/srv-journal-sitemap.xml
         - user: {{ pillar.elife.deploy_user.username }}
         - group: {{ pillar.elife.deploy_user.username }}
         - template: jinja
         - require:
-            - journal-folder
+            - journal-dockerfile-sitemap-folder
 
 config-file:
     file.managed:
