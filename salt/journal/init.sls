@@ -47,26 +47,12 @@ journal-dockerfile-web:
         - require:
             - journal-folder
 
-journal-dockerfile-sitemap-folder:
-    file.directory:
+# lsh@2021-02-19: remove once all journal instances in all environments are using observer for the sitemap
+journal-dockerfile-sitemap:
+    file.absent:
         - name: /srv/journal/sitemap
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-        - recurse:
-            - user
-            - group
         - require:
             - journal-folder
-
-journal-dockerfile-sitemap:
-    file.managed:
-        - name: /srv/journal/sitemap/sitemap.xml
-        - source: salt://journal/config/srv-journal-sitemap.xml
-        - user: {{ pillar.elife.deploy_user.username }}
-        - group: {{ pillar.elife.deploy_user.username }}
-        - template: jinja
-        - require:
-            - journal-dockerfile-sitemap-folder
 
 config-file:
     file.managed:
@@ -123,7 +109,6 @@ journal-docker-compose:
             - journal-docker-compose-env
             - journal-docker-compose-containers-env
             - journal-dockerfile-web
-            - journal-dockerfile-sitemap
 
     cmd.run:
         - name: |
@@ -164,15 +149,12 @@ journal-nginx-robots:
         - listen_in:
             - service: nginx-server-service
 
+# lsh@2021-02-19: remove once all journal instances in all environments are using observer for the sitemap
 journal-nginx-sitemap:
-    file.managed:
+    file.absent:
         - name: /etc/nginx/traits.d/sitemap.conf
-        - source: salt://journal/config/etc-nginx-traits.d-sitemap.conf
-        - template: jinja
         - require:
             - nginx-config
-        - listen_in:
-            - service: nginx-server-service
 
 journal-nginx-vhost:
     file.managed:
