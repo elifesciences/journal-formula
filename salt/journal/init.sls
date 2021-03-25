@@ -47,6 +47,13 @@ journal-dockerfile-web:
         - require:
             - journal-folder
 
+# lsh@2021-02-19: remove once all journal instances in all environments are using observer for the sitemap
+journal-dockerfile-sitemap:
+    file.absent:
+        - name: /srv/journal/sitemap
+        - require:
+            - journal-folder
+
 config-file:
     file.managed:
         - name: /srv/journal/parameters.yml
@@ -141,6 +148,13 @@ journal-nginx-robots:
             - nginx-config
         - listen_in:
             - service: nginx-server-service
+
+# lsh@2021-02-19: remove once all journal instances in all environments are using observer for the sitemap
+journal-nginx-sitemap:
+    file.absent:
+        - name: /etc/nginx/traits.d/sitemap.conf
+        - require:
+            - nginx-config
 
 journal-nginx-vhost:
     file.managed:
