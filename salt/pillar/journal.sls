@@ -9,6 +9,7 @@ journal:
     submit_url: https://submit.elifesciences.org/
 
     gtm_id: null
+    cb_id: null
     cookie_consent: false
 
     secret: ThisTokenIsNotSoSecretChangeIt
