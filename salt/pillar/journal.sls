@@ -10,7 +10,6 @@ journal:
 
     gtm_id: null
     cb_id: null
-    cookie_consent: false
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
