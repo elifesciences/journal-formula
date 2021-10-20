@@ -8,7 +8,6 @@ journal:
 
     submit_url: https://submit.elifesciences.org/
 
-    crm_api_url: https://crm.elifesciences.org/crm/sites/all/modules/civicrm/extern/rest.php
     crm_api_key: ~
     crm_api_site_key: ~
 
