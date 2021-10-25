@@ -8,6 +8,9 @@ journal:
 
     submit_url: https://submit.elifesciences.org/
 
+    crm_api_key: ~
+    crm_api_site_key: ~
+
     gtm_id: null
     cb_id: null
 
