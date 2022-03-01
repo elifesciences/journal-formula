@@ -12,10 +12,10 @@ journal:
     crm_api_site_key: ~
 
     google_api_client:
-        client_id: ~
-        client_secret: ~
-        refresh_token: ~
-        optout_unsubscribe_spreadsheet_id: ~
+        client_id: some-id
+        client_secret: ThisIsASecret
+        refresh_token: Refreshtoken
+        optout_unsubscribe_spreadsheet_id: spreadsheet-id
 
     gtm_id: null
     cb_id: null
