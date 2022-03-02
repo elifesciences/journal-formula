@@ -43,7 +43,7 @@ parameters:
 
 
     google_api_client.config.client_id: {{ pillar.journal.google_api_client.client_id }}
-    google_api_client.config.client_secret: {{ pillar.journal.google_api_client.client_id }}
+    google_api_client.config.client_secret: {{ pillar.journal.google_api_client.client_secret }}
     google_api_client.refresh_token: {{ pillar.journal.google_api_client.refresh_token }}
     google_api_client.optout_unsubscribe_spreadsheet_id: {{ pillar.journal.google_api_client.optout_unsubscribe_spreadsheet_id }}
 
