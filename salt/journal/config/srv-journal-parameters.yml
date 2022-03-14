@@ -41,6 +41,13 @@ parameters:
     crm_url: https://crm.elifesciences.org/crm/civicrm/
     crm_api_url: https://crm.elifesciences.org/crm/sites/all/modules/civicrm/extern/rest.php
 
+
+    google_api_client.config:
+        client_id: {{ pillar.journal.google_api_client.client_id }}
+        client_secret: {{ pillar.journal.google_api_client.client_secret }}
+    google_api_client.refresh_token: {{ pillar.journal.google_api_client.refresh_token }}
+    google_api_client.optout_unsubscribe_spreadsheet_id: {{ pillar.journal.google_api_client.optout_unsubscribe_spreadsheet_id }}
+
     # defaults for URL generation - host
     {% if pillar.journal.get('default_host') %}
     router.request_context.host: {{ pillar.journal.get('default_host') }}
