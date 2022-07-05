@@ -119,6 +119,7 @@ journal-docker-compose:
         - cwd: /srv/journal
         - user: {{ pillar.elife.deploy_user.username }}
         - require:
+            - docker-ready
             - file: journal-docker-compose
 
 journal-cache-warmup:
