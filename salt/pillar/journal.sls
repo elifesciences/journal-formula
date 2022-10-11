@@ -4,6 +4,7 @@ journal:
     api_key: public
     side_by_side_view_url: https://lens.elifesciences.org/
     observer_url: https://observer.elifesciences.org/
+    preprint_url: https://staging--epp.elifesciences.org
     default_host: null
 
     submit_url: https://submit.elifesciences.org/
