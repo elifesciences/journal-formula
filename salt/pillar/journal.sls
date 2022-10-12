@@ -4,6 +4,7 @@ journal:
     api_key: public
     side_by_side_view_url: https://lens.elifesciences.org/
     observer_url: https://observer.elifesciences.org/
+    # no trailing slashes. leave empty to prevent adding redirect rules
     preprint_url: https://staging--epp.elifesciences.org
     default_host: null
 
