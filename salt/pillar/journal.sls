@@ -10,7 +10,9 @@ journal:
     about_url:
     default_host: null
 
-    submit_url: https://submit.elifesciences.org/
+    # This parameter, if truthy, redirects /submit to the given value.
+    # This is different from submit_url and submit_url_redirects, in that these values exist for journal code
+    submit_redirect_url:
 
     crm_api_key: ~
     crm_api_site_key: ~
