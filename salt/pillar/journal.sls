@@ -6,6 +6,8 @@ journal:
     observer_url: https://observer.elifesciences.org/
     # no trailing slashes. leave empty to prevent adding redirect rules
     preprint_url: https://staging--epp.elifesciences.org
+    # no trailing slashes. leave empty to prevent adding redirect rules
+    about_url:
     default_host: null
 
     submit_url: https://submit.elifesciences.org/
