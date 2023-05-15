@@ -4,12 +4,29 @@ journal:
     api_key: public
     side_by_side_view_url: https://lens.elifesciences.org/
     observer_url: https://observer.elifesciences.org/
+    # no trailing slashes. leave empty to prevent adding redirect rules
+    preprint_url: https://staging--epp.elifesciences.org
+    # no trailing slashes. leave empty to prevent adding redirect rules
+    about_url:
     default_host: null
 
     submit_url: https://submit.elifesciences.org/
 
+    # This parameter, if truthy, redirects /submit to the given value.
+    # This is different from submit_url and submit_url_redirects, in that these values exist for journal code
+    submit_redirect_url:
+
+    crm_api_key: ~
+    crm_api_site_key: ~
+
+    google_api_client:
+        client_id: some-id
+        client_secret: ThisIsASecret
+        refresh_token: Refreshtoken
+        optout_unsubscribe_spreadsheet_id: spreadsheet-id
+
     gtm_id: null
-    cookie_consent: false
+    cb_id: null
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
