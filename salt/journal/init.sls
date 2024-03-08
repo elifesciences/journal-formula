@@ -130,6 +130,16 @@ journal-cache-warmup:
         - require:
             - journal-docker-compose
 
+journal-nginx-fixed-response-paths:
+    file.managed:
+        - name: /etc/nginx/traits.d/fixed-response-paths.conf
+        - source: salt://journal/config/etc-nginx-traits.d-fixed-response-paths.conf
+        - template: jinja
+        - require:
+            - nginx-config
+        - listen_in:
+            - service: nginx-server-service
+
 journal-nginx-redirect-existing-paths:
     file.managed:
         - name: /etc/nginx/traits.d/redirect-existing-paths.conf

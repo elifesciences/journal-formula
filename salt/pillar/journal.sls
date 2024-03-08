@@ -102,6 +102,10 @@ journal:
 
     calls_to_action: []
 
+    #fixed_response_paths:
+    #    404:
+    #        - /profiles/foo
+
 api_dummy:
     standalone: False
     pinned_revision_file: /srv/journal/api-dummy.sha1
