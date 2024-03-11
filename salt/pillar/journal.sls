@@ -1,3 +1,7 @@
+elife:
+    webserver:
+        app: caddy
+
 journal:
     api_url: https://prod--cdn-gateway.elifesciences.org/
     api_url_public: '%api_url%'
