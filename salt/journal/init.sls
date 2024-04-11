@@ -65,6 +65,7 @@ config-file:
         - require:
             - journal-folder
 
+# for the nginx within the container, not the host server
 assets-nginx-configuration:
     file.managed:
         - name: /srv/journal/nginx-assets.conf
@@ -131,15 +132,59 @@ journal-cache-warmup:
             - journal-docker-compose
 
 {% if pillar.elife.webserver.app == "caddy" %}
+journal-caddy-fixed-response-paths:
+    file.managed:
+        - name: /etc/caddy/snippets/fixed-response-paths
+        - source: salt://journal/config/etc-caddy-conf.d-fixed-response-paths
+        - template: jinja
+        - require:
+            - caddy-config
+        - listen_in:
+            - service: nginx-server-service
+
 journal-caddy-redirect-existing-paths:
     file.managed:
-        - name: /etc/caddy/conf.d/redirect-existing-paths
+        - name: /etc/caddy/snippets/redirect-existing-paths
         - source: salt://journal/config/etc-caddy-conf.d-redirect-existing-paths
         - template: jinja
         - require:
             - caddy-config
         - listen_in:
             - service: caddy-server-service
+
+journal-caddy-robots:
+    file.managed:
+        - name: /etc/caddy/snippets/robots
+        - source: salt://journal/config/etc-caddy-snippets-robots
+        - template: jinja
+        - require:
+            - caddy-config
+        - listen_in:
+            - service: caddy-server-service
+
+journal-caddy-vhost:
+    file.managed:
+        - name: /etc/caddy/sites.d/journal.conf
+        - source: salt://journal/config/etc-caddy-sites.d-journal.conf
+        - template: jinja
+        - require:
+            - caddy-config
+            - nginx-error-pages
+            - journal-caddy-redirect-existing-paths
+            - journal-caddy-robots
+
+maintenance-mode-end:
+    cmd.run:
+        - name: |
+            echo todo
+        - require:
+            - journal-caddy-vhost
+
+maintenance-mode-check-nginx-stays-up:
+    cmd.run:
+        - name: echo todo
+        - require:
+            - maintenance-mode-end
 
 {% else %}
 journal-nginx-fixed-response-paths:
