@@ -1,5 +1,0 @@
-{% for response_code, path_list in pillar.journal.get('fixed_response_paths', {}).items() %}
-{% for path in path_list %}
-respond {{ path }} {{ response_code }}
-{% endfor %}
-{% endfor %}
