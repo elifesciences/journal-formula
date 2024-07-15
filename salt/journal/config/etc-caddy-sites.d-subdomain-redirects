@@ -1,0 +1,14 @@
+{% if pillar.journal.get('default_host') %}
+    {% set public_host = pillar.journal.get('default_host') %}
+{% elif salt['elife.only_on_aws']() %}
+    {% set public_host = salt['elife.cfg']('project.full_hostname') %}
+{% else %}
+    {% set public_host = 'dev--journal.elifesciences.org' %}
+{% endif %}
+
+{% if salt['elife.only_on_aws']() %}
+    {% set public_scheme = 'https' %}
+{% else %}
+    {% set public_scheme = 'http' %}
+{% endif %}
+
