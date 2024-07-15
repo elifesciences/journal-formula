@@ -2,8 +2,6 @@ base:
     '*':
         - elife
         - elife.docker-native
-        #- elife.nginx
-        - elife.disable-nginx
-        - elife.caddy
-        - elife.nginx-error-pages # not dependant on nginx
+        - elife.nginx
+        - elife.nginx-error-pages
         - journal
