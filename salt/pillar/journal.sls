@@ -12,6 +12,8 @@ journal:
     resources_url:
     media_policy_url:
     community_url:
+    privacy_notice_url:
+    cookie_declaration_url:
     default_host: null
 
     submit_url: https://submit.elifesciences.org/
