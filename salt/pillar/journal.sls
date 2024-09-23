@@ -1,5 +1,6 @@
 journal:
     api_url: https://prod--cdn-gateway.elifesciences.org/
+    api_url_search_page: '%api_url%'
     api_url_public: '%api_url%'
     api_key: public
     side_by_side_view_url: https://lens.elifesciences.org/
