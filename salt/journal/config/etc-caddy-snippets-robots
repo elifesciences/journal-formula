@@ -1,0 +1,5 @@
+# https://www.robotstxt.org/robotstxt.html
+respond /robots.txt 200 {
+    header Content-Type text/plain
+    body "{% for item in pillar.journal.robots %}{{ item.replace('\n', '\\n') }}\n{% endfor %}"
+}

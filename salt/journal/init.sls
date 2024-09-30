@@ -1,3 +1,9 @@
+{% if pillar.elife.webserver.app == "caddy" %}
+maintenance-mode-start:
+    cmd.run:
+        - name: echo "todo"
+
+{% else %}
 maintenance-mode-start:
     cmd.run:
         - name: |
@@ -7,6 +13,7 @@ maintenance-mode-start:
             /etc/init.d/nginx reload
         - require:
             - nginx-server-service
+{% endif %}
 
 journal-folder:
     file.directory:
@@ -47,13 +54,6 @@ journal-dockerfile-web:
         - require:
             - journal-folder
 
-# lsh@2021-02-19: remove once all journal instances in all environments are using observer for the sitemap
-journal-dockerfile-sitemap:
-    file.absent:
-        - name: /srv/journal/sitemap
-        - require:
-            - journal-folder
-
 config-file:
     file.managed:
         - name: /srv/journal/parameters.yml
@@ -65,6 +65,7 @@ config-file:
         - require:
             - journal-folder
 
+# for the nginx within the container, not the host server
 assets-nginx-configuration:
     file.managed:
         - name: /srv/journal/nginx-assets.conf
@@ -130,6 +131,62 @@ journal-cache-warmup:
         - require:
             - journal-docker-compose
 
+{% if pillar.elife.webserver.app == "caddy" %}
+journal-caddy-fixed-response-paths:
+    file.managed:
+        - name: /etc/caddy/snippets/fixed-response-paths
+        - source: salt://journal/config/etc-caddy-conf.d-fixed-response-paths
+        - template: jinja
+        - require:
+            - caddy-config
+        - listen_in:
+            - service: nginx-server-service
+
+journal-caddy-redirect-existing-paths:
+    file.managed:
+        - name: /etc/caddy/snippets/redirect-existing-paths
+        - source: salt://journal/config/etc-caddy-conf.d-redirect-existing-paths
+        - template: jinja
+        - require:
+            - caddy-config
+        - listen_in:
+            - service: caddy-server-service
+
+journal-caddy-robots:
+    file.managed:
+        - name: /etc/caddy/snippets/robots
+        - source: salt://journal/config/etc-caddy-snippets-robots
+        - template: jinja
+        - require:
+            - caddy-config
+        - listen_in:
+            - service: caddy-server-service
+
+journal-caddy-vhost:
+    file.managed:
+        - name: /etc/caddy/sites.d/journal.conf
+        - source: salt://journal/config/etc-caddy-sites.d-journal.conf
+        - template: jinja
+        - require:
+            - caddy-config
+            - nginx-error-pages
+            - journal-caddy-redirect-existing-paths
+            - journal-caddy-robots
+
+maintenance-mode-end:
+    cmd.run:
+        - name: |
+            echo todo
+        - require:
+            - journal-caddy-vhost
+
+maintenance-mode-check-nginx-stays-up:
+    cmd.run:
+        - name: echo todo
+        - require:
+            - maintenance-mode-end
+
+{% else %}
 journal-nginx-fixed-response-paths:
     file.managed:
         - name: /etc/nginx/traits.d/fixed-response-paths.conf
@@ -160,13 +217,6 @@ journal-nginx-robots:
         - listen_in:
             - service: nginx-server-service
 
-# lsh@2021-02-19: remove once all journal instances in all environments are using observer for the sitemap
-journal-nginx-sitemap:
-    file.absent:
-        - name: /etc/nginx/traits.d/sitemap.conf
-        - require:
-            - nginx-config
-
 journal-nginx-vhost:
     file.managed:
         - name: /etc/nginx/sites-available/journal.conf
@@ -192,6 +242,8 @@ maintenance-mode-check-nginx-stays-up:
         - name: sleep 2 && /etc/init.d/nginx status
         - require:
             - maintenance-mode-end
+
+{% endif %}
 
 status-test:
     file.managed:
@@ -221,7 +273,6 @@ journal-nginx-authentication-{{ title }}:
             - journal-nginx-vhost
 {% endfor %}
 
-
 syslog-ng-for-journal-logs:
     file.managed:
         - name: /etc/syslog-ng/conf.d/journal.conf
@@ -236,3 +287,4 @@ logrotate-for-journal-logs:
     file.managed:
         - name: /etc/logrotate.d/journal
         - source: salt://journal/config/etc-logrotate.d-journal
+
