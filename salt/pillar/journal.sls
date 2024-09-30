@@ -15,6 +15,7 @@ journal:
     community_url:
     privacy_notice_url:
     cookie_declaration_url:
+    peer_review_url:
     default_host: null
 
     submit_url: https://submit.elifesciences.org/
