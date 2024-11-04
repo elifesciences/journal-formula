@@ -17,9 +17,6 @@ journal:
     cookie_declaration_url:
     learning_resources_url:
     hubspot_url: https://connect.elifesciences.org
-    community_newsletter_url: 
-    elife_newsletter_url:
-    content_alerts_url:
     default_host: null
 
     submit_url: https://submit.elifesciences.org/
