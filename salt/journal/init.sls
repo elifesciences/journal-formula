@@ -193,6 +193,21 @@ maintenance-mode-check-nginx-stays-up:
         - require:
             - maintenance-mode-end
 
+{% if pillar.elife.webserver.app == 'caddy' %}
+# Even when using caddy, we rely on nginx to serve the application
+journal-caddy-vhost:
+    file.managed:
+        - name: /etc/caddy/sites.d/journal
+        - source: salt://journal/config/etc-caddy-sites.d-journal
+        - template: jinja
+        - require_in:
+            - cmd: caddy-validate-config
+            - cmd: journal-docker-compose
+        - watch_in:
+            # restart caddy if site config changes
+            - service: caddy-server-service
+{% endif %}
+
 status-test:
     file.managed:
         - name: /srv/journal/status_test.sh

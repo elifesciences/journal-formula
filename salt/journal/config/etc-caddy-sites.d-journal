@@ -1,0 +1,23 @@
+(config) {
+    log {
+        output file /var/log/caddy/access.log
+        format json {
+            time_format rfc3339
+        }
+    }
+
+    handle {
+        reverse_proxy localhost:8000
+    }
+}
+
+:80 {
+    import config
+}
+
+{% if salt['elife.cfg']('cfn.outputs.DomainName') -%}
+:443 {
+    import ../snippets/certs
+    import config
+}
+{% endif %}

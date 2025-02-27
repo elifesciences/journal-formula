@@ -48,13 +48,13 @@ journal:
             User-Agent: *
             Disallow: $robots_disallow
             Disallow: /download/
-        - | 
+        - |
             User-agent: Amazonbot
             Disallow: /search/
-        - | 
+        - |
             User-agent: turnitinbot
             Disallow: /search/
-        - | 
+        - |
             User-agent: bingbot
             Disallow: /search/
 
@@ -78,7 +78,7 @@ journal:
     critical_css: False
 
     tenon:
-        api_key: 
+        api_key:
 
     #subdomain_redirects:
     #    subdomain1: /bar # subdomain1.domain.tld/foo redirected to domain.tld/bar
@@ -116,3 +116,7 @@ journal:
 api_dummy:
     standalone: False
     pinned_revision_file: /srv/journal/api-dummy.sha1
+
+elife:
+    webserver:
+        app: caddy
