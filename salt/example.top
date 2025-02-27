@@ -4,4 +4,5 @@ base:
         - elife.docker-native
         - elife.nginx
         - elife.nginx-error-pages
+        - elife.caddy
         - journal
