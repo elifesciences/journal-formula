@@ -193,7 +193,6 @@ maintenance-mode-check-nginx-stays-up:
         - require:
             - maintenance-mode-end
 
-
 {% if pillar.elife.webserver.app == 'caddy' %}
 # Even when using caddy, we rely on nginx to serve the application
 journal-caddy-vhost:
