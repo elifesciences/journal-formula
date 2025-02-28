@@ -5,19 +5,24 @@
             time_format rfc3339
         }
     }
-
-    handle {
-        reverse_proxy localhost:8000
-    }
 }
 
 :80 {
     import config
+    handle {
+        reverse_proxy localhost:8000
+    }
 }
 
 {% if salt['elife.cfg']('cfn.outputs.DomainName') -%}
 :443 {
     import ../snippets/certs
     import config
+
+    handle {
+        reverse_proxy localhost:8000 {
+            header_up X-HTTPS on
+        }
+    }
 }
 {% endif %}
