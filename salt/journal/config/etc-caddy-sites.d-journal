@@ -7,7 +7,7 @@
     }
 
     {% if pillar.journal.web_users %}
-    @auth_required_for not client_ip 127.0.0.1
+    @auth_required_for not client_ip 127.0.0.1 ::1
     basicauth @auth_required_for bcrypt "Journal {{ pillar.elife.env }}" {
         {% for title, user in pillar.journal.web_users.items() %}
         {% if user.caddy_password_hash %}
